@@ -1,59 +1,58 @@
 type ExampleEntity @entity {
-  id: ID!
-  count: BigInt!
-  market: Bytes! # address
+	id: ID!
+	count: BigInt!
+	market: Bytes! # address
 }
 
 type MarketFactory @entity {
-  id: ID!
-  marketCount: BigInt!
-  markets: [Market!]! @derivedFrom(field: "factory")
+	id: ID!
+	marketCount: BigInt!
+	markets: [Market!]! @derivedFrom(field: "factory")
 }
 
 type Market @entity {
-  "
- 
-  "
-  id: ID!
-  
-  factory: MarketFactory!
+	id: ID!
 
-  creator: Bytes!
-  oracle: Bytes!
-  identifier: Bytes!
+	factory: MarketFactory!
 
-  reserveC: BigDecimal!
-  reserve0: BigDecimal!
-  reserve1: BigDecimal!
+	creator: Bytes!
+	oracle: Bytes!
+	identifier: Bytes!
 
-  tokenC: Bytes!
-  token0: Bytes!
-  token1: Bytes!
+	reserveC: BigDecimal!
+	reserve0: BigDecimal!
+	reserve1: BigDecimal!
 
-  reserveDoN0: BigDecimal!
-  reserveDoN1: BigDecimal!
-  lastAmountStaked: BigDecimal!
-  staker0: Bytes!
-  staker1: Bytes!
-  lastOutcomeStaked: BigInt!
-  stakes: [Stake!]! @derivedFrom(field: "market")
+	tokenC: Bytes!
+	token0: Bytes!
+	token1: Bytes!
 
-  expireAtBlock: BigInt!
-  donBufferEndsAtBlock: BigInt!
-  resolutionEndsAtBlock: BigInt!
-  expireBufferBlocks: BigInt!
-  donBufferBlocks: BigInt!
-  resolutionBufferBlocks: BigInt!
-  donEscalationCount: BigInt!
-  donEscalationLimit: BigInt!
-  oracleFeeNumerator: BigInt!
-  oracleFeeDenominator: BigInt!
-  outcome: BigInt!
-  stage: BigInt!
+	reserveDoN0: BigDecimal!
+	reserveDoN1: BigDecimal!
+	lastAmountStaked: BigDecimal!
+	staker0: Bytes!
+	staker1: Bytes!
+	lastOutcomeStaked: BigInt!
+	stakes: [Stake!]! @derivedFrom(field: "market")
+
+	expireAtBlock: BigInt!
+	donBufferEndsAtBlock: BigInt!
+	resolutionEndsAtBlock: BigInt!
+	expireBufferBlocks: BigInt!
+	donBufferBlocks: BigInt!
+	resolutionBufferBlocks: BigInt!
+	donEscalationCount: BigInt!
+	donEscalationLimit: BigInt!
+	oracleFeeNumerator: BigInt!
+	oracleFeeDenominator: BigInt!
+	outcome: BigInt!
+	stage: BigInt!
 }
 
 type Stake @entity {
-  market: Market!
-  by: Bytes!
-  for: BigInt!
+	id: ID!
+	market: Market!
+	by: Bytes!
+	stake0: BigDecimal!
+	stake1: BigDecimal!
 }
