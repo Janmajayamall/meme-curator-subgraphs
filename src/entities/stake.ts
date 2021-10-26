@@ -11,7 +11,7 @@ export function loadStake(marketAddress: Address, by: Address): Stake {
 	return stake;
 }
 
-export function updateStake(marketAddress: Address, by: Address) {
+export function updateStake(marketAddress: Address, by: Address): void {
 	const stake = loadStake(marketAddress, by);
 	const stakes = getStakes(marketAddress, by);
 	stake.stake0 = stakes[0];

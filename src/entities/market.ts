@@ -4,6 +4,7 @@ import { Market as MarketContract } from "../../generated/templates/Market/Marke
 import {
 	convertBigIntToDecimal,
 	FACTORY_ADDRESS,
+	ONE_BD,
 	ONE_BI,
 	ZERO_BD,
 	ZERO_BI,
@@ -17,7 +18,7 @@ export function loadMarket(marketAddress: Address): Market {
 	return market;
 }
 
-export function updateMarketDetails(marketAddress: Address) {
+export function updateMarketDetails(marketAddress: Address): void {
 	const marketDetails = MarketContract.bind(marketAddress).getMarketDetails();
 	const market = loadMarket(marketAddress);
 
@@ -33,11 +34,14 @@ export function updateMarketDetails(marketAddress: Address) {
 	market.oracleFeeDenominator = marketDetails[9];
 	market.outcome = marketDetails[10];
 	market.stage = marketDetails[11];
+	market.oracleFee = convertBigIntToDecimal(marketDetails[8], ONE_BD).div(
+		convertBigIntToDecimal(marketDetails[9], ONE_BD)
+	);
 
 	market.save();
 }
 
-export function updateMarketBasicInfo(marketAddress: Address) {
+export function updateMarketBasicInfo(marketAddress: Address): void {
 	const marketInfo = MarketContract.bind(marketAddress).getMarketInfo();
 	const tokenAddresses = MarketContract.bind(
 		marketAddress
@@ -56,7 +60,7 @@ export function updateMarketBasicInfo(marketAddress: Address) {
 	market.save();
 }
 
-export function updateMarketReserves(marketAddress: Address) {
+export function updateMarketReserves(marketAddress: Address): void {
 	const tokenOReserves = MarketContract.bind(
 		marketAddress
 	).getOutcomeReserves();
@@ -74,13 +78,13 @@ export function updateMarketReserves(marketAddress: Address) {
 	market.save();
 }
 
-export function updateMarketStaking(marketAddress: Address) {
+export function updateMarketStaking(marketAddress: Address): void {
 	const staking = MarketContract.bind(marketAddress).getStaking();
 	const market = loadMarket(marketAddress);
 	market.lastAmountStaked = convertBigIntToDecimal(staking.value0);
 	market.staker0 = staking.value1;
 	market.staker1 = staking.value2;
-	market.lastOutcomeStaked = staking.value3;
+	market.lastOutcomeStaked = BigInt.fromI32(staking.value3);
 
 	market.save();
 }
