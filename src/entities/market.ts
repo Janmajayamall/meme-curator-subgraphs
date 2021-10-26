@@ -1,7 +1,13 @@
 import { Address, BigDecimal, BigInt } from "@graphprotocol/graph-ts";
 import { Market } from "../../generated/schema";
 import { Market as MarketContract } from "../../generated/templates/Market/Market";
-import { convertBigIntToDecimal, FACTORY_ADDRESS } from "./../helpers";
+import {
+	convertBigIntToDecimal,
+	FACTORY_ADDRESS,
+	ONE_BI,
+	ZERO_BD,
+	ZERO_BI,
+} from "./../helpers";
 
 export function loadMarket(marketAddress: Address): Market {
 	var market = Market.load(marketAddress.toHex());
@@ -77,4 +83,20 @@ export function updateMarketStaking(marketAddress: Address) {
 	market.lastOutcomeStaked = staking.value3;
 
 	market.save();
+}
+
+export function getStakes(
+	marketAddress: Address,
+	user: Address
+): Array<BigDecimal> {
+	var stakes: Array<BigDecimal> = [ZERO_BD, ZERO_BD];
+
+	stakes[0] = convertBigIntToDecimal(
+		MarketContract.bind(marketAddress).getStake(ZERO_BI, user)
+	);
+	stakes[1] = convertBigIntToDecimal(
+		MarketContract.bind(marketAddress).getStake(ONE_BI, user)
+	);
+
+	return stakes;
 }

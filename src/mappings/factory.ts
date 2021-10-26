@@ -16,6 +16,7 @@ export function handleMarketCreated(event: MarketCreated): void {
 		marketFactory.marketCount = ZERO_BI;
 	}
 
+	// new market entity
 	updateMarketBasicInfo(event.params.market);
 	updateMarketReserves(event.params.market);
 	updateMarketStaking(event.params.market);
