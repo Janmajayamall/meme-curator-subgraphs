@@ -1,4 +1,4 @@
-import { Address, BigDecimal, BigInt } from "@graphprotocol/graph-ts";
+import { Address, BigDecimal, BigInt, log } from "@graphprotocol/graph-ts";
 import { Market } from "../../generated/schema";
 import { Market as MarketContract } from "../../generated/templates/Market/Market";
 import {
@@ -13,13 +13,23 @@ import {
 export function loadMarket(marketAddress: Address): Market {
 	var market = Market.load(marketAddress.toHex());
 	if (!market) {
+		const contract = MarketContract.bind(marketAddress);
+		const details = contract.try_getMarketDetails();
+		if (details.reverted) {
+			log.info("holy this reverted {}", [marketAddress.toHex()]);
+		}
+
 		market = new Market(marketAddress.toHex());
 	}
 	return market;
 }
 
 export function updateMarketDetails(marketAddress: Address): void {
-	const marketDetails = MarketContract.bind(marketAddress).getMarketDetails();
+	const res = MarketContract.bind(marketAddress).try_getMarketDetails();
+	if (res.reverted) {
+		return;
+	}
+	const marketDetails = res.value;
 	const market = loadMarket(marketAddress);
 
 	market.expireAtBlock = marketDetails[0];
