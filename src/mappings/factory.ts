@@ -8,13 +8,17 @@ import {
 	updateMarketStaking,
 	updateMarketDetails,
 } from "./../entities";
+import { log } from "@graphprotocol/graph-ts";
 
 export function handleMarketCreated(event: MarketCreated): void {
+	log.info("handleMarketCreated called", []);
 	var marketFactory = MarketFactory.load(FACTORY_ADDRESS);
 	if (!marketFactory) {
 		marketFactory = new MarketFactory(FACTORY_ADDRESS);
 		marketFactory.marketCount = ZERO_BI;
 	}
+	log.info("Factory Address - {}", [FACTORY_ADDRESS]);
+	log.info("Market Address - {}", [event.params.market.toHex()]);
 
 	// new market entity
 	updateMarketBasicInfo(event.params.market);
@@ -24,6 +28,7 @@ export function handleMarketCreated(event: MarketCreated): void {
 
 	MarketTemplate.create(event.params.market);
 
-	marketFactory.marketCount.plus(ONE_BI);
+	marketFactory.marketCount = marketFactory.marketCount.plus(ONE_BI);
 	marketFactory.save();
+	log.info("handleMarketCreated logging done", []);
 }

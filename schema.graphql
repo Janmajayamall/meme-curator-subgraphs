@@ -48,6 +48,7 @@ type Market @entity {
 	outcome: BigInt!
 	stage: BigInt!
 	oracleFee: BigDecimal!
+	oracleFee1: BigDecimal!
 }
 
 type Stake @entity {
