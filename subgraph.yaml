@@ -8,16 +8,18 @@ dataSources:
       source:
           address: "0xD4D664D419A6A845C98Cc366ae1c4b24592BD5CE"
           abi: MarketFactory
-          startBlock: 6047687
+          startBlock: 6047511
       mapping:
           kind: ethereum/events
           apiVersion: 0.0.5
           language: wasm/assemblyscript
           entities:
-              - EC
+              - MarketFactory
           abis:
               - name: MarketFactory
                 file: ./abis/MarketFactory.json
+              - name: Market
+                file: ./abis/Market.json
           eventHandlers:
               - event: MarketCreated(indexed address)
                 handler: handleMarketCreated
@@ -34,7 +36,8 @@ templates:
           language: wasm/assemblyscript
           file: ./src/mappings/market.ts
           entities:
-              - Exchange
+              - Market
+              - Stake
           abis:
               - name: Market
                 file: ./abis/Market.json

@@ -28,6 +28,11 @@
         "internalType": "bytes32",
         "name": "_identifier",
         "type": "bytes32"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_fundingAmount",
+        "type": "uint256"
       }
     ],
     "name": "createMarket",

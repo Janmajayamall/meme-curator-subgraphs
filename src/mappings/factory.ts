@@ -10,7 +10,6 @@ import {
 	loadMarket,
 } from "./../entities";
 import { log } from "@graphprotocol/graph-ts";
-import { Market as MarketContract } from "./../../generated/templates/Market/Market";
 export function handleMarketCreated(event: MarketCreated): void {
 	// log.info("handleMarketCreated called", []);
 	var marketFactory = MarketFactory.load(FACTORY_ADDRESS);
@@ -21,18 +20,11 @@ export function handleMarketCreated(event: MarketCreated): void {
 	log.info("Factory Address - {}", [FACTORY_ADDRESS]);
 	log.info("Market Address - {}", [event.params.market.toHex()]);
 
-	const market = loadMarket(event.params.market);
-	market.factory = FACTORY_ADDRESS;
-	market.save();
-
-	// const marketContract = MarketContract.bind(event.params.market);
-	// const details = marketContract.try_getMarketDetails();
-
-	// // new market entity
-	// updateMarketBasicInfo(event.params.market);
-	// updateMarketReserves(event.params.market);
-	// updateMarketStaking(event.params.market);
-	// updateMarketDetails(event.params.market);
+	// new market entity
+	updateMarketBasicInfo(event.params.market);
+	updateMarketReserves(event.params.market);
+	updateMarketStaking(event.params.market);
+	updateMarketDetails(event.params.market);
 
 	MarketTemplate.create(event.params.market);
 

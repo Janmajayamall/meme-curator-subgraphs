@@ -13,23 +13,13 @@ import {
 export function loadMarket(marketAddress: Address): Market {
 	var market = Market.load(marketAddress.toHex());
 	if (!market) {
-		const contract = MarketContract.bind(marketAddress);
-		const details = contract.try_getMarketDetails();
-		if (details.reverted) {
-			log.info("holy this reverted {}", [marketAddress.toHex()]);
-		}
-
 		market = new Market(marketAddress.toHex());
 	}
 	return market;
 }
 
 export function updateMarketDetails(marketAddress: Address): void {
-	const res = MarketContract.bind(marketAddress).try_getMarketDetails();
-	if (res.reverted) {
-		return;
-	}
-	const marketDetails = res.value;
+	const marketDetails = MarketContract.bind(marketAddress).getMarketDetails();
 	const market = loadMarket(marketAddress);
 
 	market.expireAtBlock = marketDetails[0];
