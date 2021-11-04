@@ -43,12 +43,25 @@ type Market @entity {
 	stage: BigInt!
 	oracleFee: BigDecimal!
 	oracleFee1: BigDecimal!
+
+	users: [UserMarket!]! @derivedFrom(field: "market")
 }
 
 type Stake @entity {
-	id: ID!
+	id: ID! # {user}-{market}
 	market: Market!
-	by: Bytes!
+	user: User!
 	stake0: BigDecimal!
 	stake1: BigDecimal!
+}
+
+type User @entity {
+	id: ID!
+	markets: [UserMarket!]! @derivedFrom(field: "user")
+}
+
+type UserMarket @entity {
+	id: ID! # {user}-{market}
+	user: User!
+	market: Market!
 }

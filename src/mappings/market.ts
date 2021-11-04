@@ -11,6 +11,8 @@ import {
 	updateMarketReserves,
 	updateMarketStaking,
 	updateStake,
+	saveUser,
+	saveUserMarket,
 } from "../entities/index";
 
 export function handleOutcomeSet(event: OutcomeSet): void {
@@ -19,18 +21,26 @@ export function handleOutcomeSet(event: OutcomeSet): void {
 
 export function handleOutcomeStaked(event: OutcomeStaked): void {
 	updateMarketStaking(event.params.market);
+	saveUser(event.params.by);
+	saveUserMarket(event.params.by, event.params.market);
 	updateStake(event.params.market, event.params.by);
 }
 
 export function handleOutcomeTraded(event: OutcomeTraded): void {
 	updateMarketReserves(event.params.market);
+	saveUser(event.params.by);
+	saveUserMarket(event.params.by, event.params.market);
 	updateMarketDetails(event.params.market);
 }
 
 export function handleStakedRedeemed(event: StakedRedeemed): void {
 	updateMarketReserves(event.params.market);
+	saveUser(event.params.by);
+	saveUserMarket(event.params.by, event.params.market);
 }
 
 export function handleWinningRedeemed(event: WinningRedeemed): void {
 	updateMarketReserves(event.params.market);
+	saveUser(event.params.by);
+	saveUserMarket(event.params.by, event.params.market);
 }

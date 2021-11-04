@@ -7,7 +7,6 @@ import {
 	updateMarketReserves,
 	updateMarketStaking,
 	updateMarketDetails,
-	loadMarket,
 } from "./../entities";
 import { log } from "@graphprotocol/graph-ts";
 export function handleMarketCreated(event: MarketCreated): void {
@@ -30,5 +29,4 @@ export function handleMarketCreated(event: MarketCreated): void {
 
 	marketFactory.marketCount = marketFactory.marketCount.plus(ONE_BI);
 	marketFactory.save();
-	// log.info("handleMarketCreated logging done", []);
 }

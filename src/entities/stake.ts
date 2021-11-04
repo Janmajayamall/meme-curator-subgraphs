@@ -3,10 +3,12 @@ import { getStakes } from ".";
 import { Stake } from "../../generated/schema";
 
 export function loadStake(marketAddress: Address, by: Address): Stake {
-	const id = by.toHex() + marketAddress.toHex();
+	const id = by.toHex() + "-" + marketAddress.toHex();
 	var stake = Stake.load(id);
 	if (!stake) {
 		stake = new Stake(id);
+		stake.user = by.toHex();
+		stake.market = marketAddress.toHex();
 	}
 	return stake;
 }
