@@ -6,9 +6,9 @@ dataSources:
       name: MarketFactory
       network: arbitrum-rinkeby
       source:
-          address: "0xD4D664D419A6A845C98Cc366ae1c4b24592BD5CE"
+          address: "0x36beE43e0548cfAa63e8094895b2Ede098e36B46"
           abi: MarketFactory
-          startBlock: 6047511
+          startBlock: 6203597
       mapping:
           kind: ethereum/events
           apiVersion: 0.0.5
@@ -52,9 +52,3 @@ templates:
                 handler: handleWinningRedeemed
               - event: StakedRedeemed(indexed address,indexed address)
                 handler: handleStakedRedeemed
-    # "DEPLOYER": "0xed53fa304E7fcbab4E8aCB184F5FC6F69Ed54fF6",
-    # "MarketFactory": "0xD4D664D419A6A845C98Cc366ae1c4b24592BD5CE",
-    # "MarketRouter": "0x4789008BBa817d16904Dc4c9273e319c1625c331",
-    # "OracleMultiSig": "0x62862436A93B538b7820E0F24E0b6F9e3f9C027d",
-    # "MemeToken": "0xFB626449A112C95FECF7829deeA9445C9ECC7e56",
-    # "ContractHelper": "0xD1F7c8dde5F1d9d8691BF5ee03559D1767324717"
