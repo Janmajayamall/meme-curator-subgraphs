@@ -1,0 +1,111 @@
+[
+	{
+		"inputs": [],
+		"name": "getDelegate",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getMarketParams",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			},
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			},
+			{
+				"internalType": "uint8",
+				"name": "",
+				"type": "uint8"
+			},
+			{
+				"internalType": "uint8",
+				"name": "",
+				"type": "uint8"
+			},
+			{
+				"internalType": "uint16",
+				"name": "",
+				"type": "uint16"
+			},
+			{
+				"internalType": "uint32",
+				"name": "",
+				"type": "uint32"
+			},
+			{
+				"internalType": "uint32",
+				"name": "",
+				"type": "uint32"
+			},
+			{
+				"internalType": "uint32",
+				"name": "",
+				"type": "uint32"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "marketConfig",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "tokenC",
+				"type": "address"
+			},
+			{
+				"internalType": "bool",
+				"name": "isActive",
+				"type": "bool"
+			},
+			{
+				"internalType": "uint8",
+				"name": "feeNumerator",
+				"type": "uint8"
+			},
+			{
+				"internalType": "uint8",
+				"name": "feeDenominator",
+				"type": "uint8"
+			},
+			{
+				"internalType": "uint16",
+				"name": "donEscalationLimit",
+				"type": "uint16"
+			},
+			{
+				"internalType": "uint32",
+				"name": "expireBufferBlocks",
+				"type": "uint32"
+			},
+			{
+				"internalType": "uint32",
+				"name": "donBufferBlocks",
+				"type": "uint32"
+			},
+			{
+				"internalType": "uint32",
+				"name": "resolutionBufferBlocks",
+				"type": "uint32"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]

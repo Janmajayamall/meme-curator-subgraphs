@@ -65,3 +65,16 @@ type UserMarket @entity {
 	user: User!
 	market: Market!
 }
+
+type Oracle @entity {
+	id: ID!
+	delegate: Bytes!
+	tokenC: Bytes!
+	isActive: Boolean
+	feeNumerator: BigInt!
+	feeDenominator: BigInt!
+	donEscalationLimit: BigInt!
+	expireBufferBlocks: BigInt!
+	donBufferBlocks: BigInt!
+	resolutionBufferBlocks: BigInt!
+}
