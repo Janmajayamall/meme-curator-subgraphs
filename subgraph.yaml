@@ -6,9 +6,9 @@ dataSources:
       name: MarketFactory
       network: arbitrum-rinkeby
       source:
-          address: "0x36beE43e0548cfAa63e8094895b2Ede098e36B46"
+          address: "0x01bE36d951B548E1074d15F3144291b0f8C6B3A0"
           abi: MarketFactory
-          startBlock: 6203597
+          startBlock: 6528933
       mapping:
           kind: ethereum/events
           apiVersion: 0.0.5
@@ -28,9 +28,9 @@ dataSources:
       name: OracleFactory
       network: arbitrum-rinkeby
       source:
-          address: "0x38CEbFf6520aB9A3238809c53b12a3668e5F4779"
+          address: "0x57477F917802B59817910D1e8b1fD05090C6a461"
           abi: OracleFactory
-          startBlock: 6454308
+          startBlock: 6529083
       mapping:
           kind: ethereum/events
           apiVersion: 0.0.5

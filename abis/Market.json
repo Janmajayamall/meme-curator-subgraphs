@@ -148,9 +148,9 @@
     "name": "getMarketInfo",
     "outputs": [
       {
-        "internalType": "bytes32",
+        "internalType": "string",
         "name": "",
-        "type": "bytes32"
+        "type": "string"
       },
       {
         "internalType": "address",

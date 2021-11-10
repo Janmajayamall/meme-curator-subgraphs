@@ -11,7 +11,7 @@ type Market @entity {
 
 	creator: Bytes!
 	oracle: Bytes!
-	identifier: Bytes!
+	identifier: String!
 
 	reserveC: BigDecimal!
 	reserve0: BigDecimal!
