@@ -3,34 +3,12 @@ schema:
     file: ./schema.graphql
 dataSources:
     - kind: ethereum/contract
-      name: MarketFactory
-      network: arbitrum-rinkeby
-      source:
-          address: "0x01bE36d951B548E1074d15F3144291b0f8C6B3A0"
-          abi: MarketFactory
-          startBlock: 6528933
-      mapping:
-          kind: ethereum/events
-          apiVersion: 0.0.5
-          language: wasm/assemblyscript
-          entities:
-              - MarketFactory
-          abis:
-              - name: MarketFactory
-                file: ./abis/MarketFactory.json
-              - name: Market
-                file: ./abis/Market.json
-          eventHandlers:
-              - event: MarketCreated(indexed address)
-                handler: handleMarketCreated
-          file: ./src/mappings/factory.ts
-    - kind: ethereum/contract
       name: OracleFactory
       network: arbitrum-rinkeby
       source:
-          address: "0x57477F917802B59817910D1e8b1fD05090C6a461"
+          address: "0x01bE36d951B548E1074d15F3144291b0f8C6B3A0"
           abi: OracleFactory
-          startBlock: 6529083
+          startBlock: 6528933
       mapping:
           kind: ethereum/events
           apiVersion: 0.0.5
@@ -40,37 +18,43 @@ dataSources:
           abis:
               - name: OracleFactory
                 file: ./abis/OracleFactory.json
-              - name: Oracle
-                file: ./abis/Oracle.json
+              - name: OracleMarkets
+                file: ./abis/OracleMarkets.json
           eventHandlers:
-              - event: OracleRegistered(indexed address)
-                handler: handleOracleRegistered
-          file: ./src/mappings/oracleFactory.ts
+              - event: OracleCreated(indexed address)
+                handler: handleOracleCreated
+          file: ./src/mappings/factory.ts
 templates:
-    - name: Market
+    - name: OracleMarkets
       kind: ethereum/contract
       network: arbitrum-rinkeby
       source:
-          abi: Market
+          abi: OracleMarkets
       mapping:
           kind: ethereum/events
           apiVersion: 0.0.5
           language: wasm/assemblyscript
-          file: ./src/mappings/market.ts
+          file: ./src/mappings/oracleMarkets.ts
           entities:
+              - Oracle
               - Market
-              - Stake
           abis:
-              - name: Market
-                file: ./abis/Market.json
+              - name: OracleMarkets
+                file: ./abis/OracleMarkets.json
           eventHandlers:
-              - event: OutcomeTraded(indexed address,indexed address)
+              - event: MarketCreated(indexed address,indexed bytes32,indexed bytes32)
+                handler: handleMarketCreated
+              - event: OutcomeTraded(indexed bytes32,indexed address)
                 handler: handleOutcomeTraded
-              - event: OutcomeStaked(indexed address,indexed address)
+              - event: OutcomeStaked(indexed bytes32,indexed address)
                 handler: handleOutcomeStaked
-              - event: OutcomeSet(indexed address)
+              - event: OutcomeSet(indexed bytes32)
                 handler: handleOutcomeSet
-              - event: WinningRedeemed(indexed address,indexed address)
+              - event: WinningRedeemed(indexed bytes32,indexed address)
                 handler: handleWinningRedeemed
-              - event: StakedRedeemed(indexed address,indexed address)
+              - event: StakedRedeemed(indexed bytes32,indexed address)
                 handler: handleStakedRedeemed
+              - event: OracleConfigUpdated()
+                handler: handleOracleConfigUpdated
+              - event: DelegateChanged(indexed address)
+                handler: handleDelegateChanged

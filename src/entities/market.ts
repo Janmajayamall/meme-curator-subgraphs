@@ -1,106 +1,118 @@
-import { Address, BigDecimal, BigInt, log } from "@graphprotocol/graph-ts";
+import { Address, Bytes } from "@graphprotocol/graph-ts";
 import { Market } from "../../generated/schema";
-import { Market as MarketContract } from "../../generated/templates/Market/Market";
 import {
-	convertBigIntToDecimal,
-	FACTORY_ADDRESS,
-	ONE_BD,
-	ONE_BI,
-	ZERO_BD,
-	ZERO_BI,
-} from "./../helpers";
+	OracleMarkets as OracleMarketsContract,
+	OracleMarkets__marketConfigResult,
+} from "../../generated/OracleFactory/OracleMarkets";
+import { convertBigIntToDecimal } from "../helpers";
 
-export function loadMarket(marketAddress: Address): Market {
-	var market = Market.load(marketAddress.toHex());
+export function loadMarket(marketIdentifier: Bytes): Market {
+	var market = Market.load(marketIdentifier.toHex());
 	if (!market) {
-		market = new Market(marketAddress.toHex());
+		market = new Market(marketIdentifier.toHex());
 	}
 	return market;
 }
 
-export function updateMarketDetails(marketAddress: Address): void {
-	const marketDetails = MarketContract.bind(marketAddress).getMarketDetails();
-	const market = loadMarket(marketAddress);
+export function updateMarketDetails(
+	marketIdentifier: Bytes,
+	oracleMarketsAddress: Address
+): void {
+	const details = OracleMarketsContract.bind(
+		oracleMarketsAddress
+	).marketDetails(marketIdentifier);
+	const market = loadMarket(marketIdentifier);
 
-	market.expireAtBlock = marketDetails[0];
-	market.donBufferEndsAtBlock = marketDetails[1];
-	market.resolutionEndsAtBlock = marketDetails[2];
-	market.expireBufferBlocks = marketDetails[3];
-	market.donBufferBlocks = marketDetails[4];
-	market.resolutionBufferBlocks = marketDetails[5];
-	market.donEscalationCount = marketDetails[6];
-	market.donEscalationLimit = marketDetails[7];
-	market.oracleFeeNumerator = marketDetails[8];
-	market.oracleFeeDenominator = marketDetails[9];
-	market.outcome = marketDetails[10];
-	market.stage = marketDetails[11];
-	market.oracleFee = convertBigIntToDecimal(marketDetails[8], ONE_BD).div(
-		convertBigIntToDecimal(marketDetails[9], ONE_BD)
-	);
+	market.tokenC = details.value0;
+	market.feeNumerator = details.value1;
+	market.feeDenominator = details.value2;
+	market.fee = details.value1
+		.toBigDecimal()
+		.div(details.value2.toBigDecimal());
 
 	market.save();
 }
 
-export function updateMarketBasicInfo(marketAddress: Address): void {
-	const marketInfo = MarketContract.bind(marketAddress).getMarketInfo();
-	const tokenAddresses = MarketContract.bind(
-		marketAddress
-	).getTokenAddresses();
-	const market = loadMarket(marketAddress);
+export function updateStateDetails(
+	marketIdentifier: Bytes,
+	oracleMarketsAddress: Address
+): void {
+	const details = OracleMarketsContract.bind(
+		oracleMarketsAddress
+	).stateDetails(marketIdentifier);
+	const market = loadMarket(marketIdentifier);
 
-	market.factory = FACTORY_ADDRESS;
-	market.identifier = marketInfo.value0;
-	market.creator = marketInfo.value1;
-	market.oracle = marketInfo.value2;
-
-	market.tokenC = tokenAddresses.value0;
-	market.token0 = tokenAddresses.value1;
-	market.token1 = tokenAddresses.value2;
-
-	market.save();
-}
-
-export function updateMarketReserves(marketAddress: Address): void {
-	const tokenOReserves = MarketContract.bind(
-		marketAddress
-	).getOutcomeReserves();
-	const tokenCReserves = MarketContract.bind(
-		marketAddress
-	).getTokenCReserves();
-	const market = loadMarket(marketAddress);
-
-	market.reserveC = convertBigIntToDecimal(tokenCReserves.value0);
-	market.reserve0 = convertBigIntToDecimal(tokenOReserves.value0);
-	market.reserve1 = convertBigIntToDecimal(tokenOReserves.value1);
-	market.reserveDoN0 = convertBigIntToDecimal(tokenCReserves.value1);
-	market.reserveDoN1 = convertBigIntToDecimal(tokenCReserves.value2);
+	market.expireAtBlock = details.value0;
+	market.donBufferEndsAtBlock = details.value1;
+	market.resolutionEndsAtBlock = details.value2;
+	market.donBufferBlocks = details.value3;
+	market.resolutionBufferBlocks = details.value4;
+	market.donEscalationCount = details.value5;
+	market.donEscalationLimit = details.value6;
+	market.outcome = details.value7;
+	market.stage = details.value8;
 
 	market.save();
 }
 
-export function updateMarketStaking(marketAddress: Address): void {
-	const staking = MarketContract.bind(marketAddress).getStaking();
-	const market = loadMarket(marketAddress);
-	market.lastAmountStaked = convertBigIntToDecimal(staking.value0);
-	market.staker0 = staking.value1;
-	market.staker1 = staking.value2;
-	market.lastOutcomeStaked = BigInt.fromI32(staking.value3);
+export function updateBasicDetails(
+	marketIdentifier: Bytes,
+	creator: Address,
+	eventIdentifier: Address,
+	oracleMarketsAddress: Address
+): void {
+	const market = loadMarket(marketIdentifier);
+	market.oracle = oracleMarketsAddress.toHex();
+	market.creator = creator;
+	market.eventIdentifier = eventIdentifier;
+	market.marketIdentifier = marketIdentifier;
 
 	market.save();
 }
 
-export function getStakes(
-	marketAddress: Address,
-	user: Address
-): Array<BigDecimal> {
-	var stakes: Array<BigDecimal> = [ZERO_BD, ZERO_BD];
+export function updateOutcomeReserves(
+	marketIdentifier: Bytes,
+	oracleMarketsAddress: Address
+): void {
+	const reserves = OracleMarketsContract.bind(
+		oracleMarketsAddress
+	).outcomeReserves(marketIdentifier);
+	const market = loadMarket(marketIdentifier);
 
-	stakes[0] = convertBigIntToDecimal(
-		MarketContract.bind(marketAddress).getStake(ZERO_BI, user)
-	);
-	stakes[1] = convertBigIntToDecimal(
-		MarketContract.bind(marketAddress).getStake(ONE_BI, user)
-	);
+	market.outcomeReserve0 = convertBigIntToDecimal(reserves.value0);
+	market.outcomeReserve1 = convertBigIntToDecimal(reserves.value1);
 
-	return stakes;
+	market.save();
+}
+
+export function updateStakingReserves(
+	marketIdentifier: Bytes,
+	oracleMarketsAddress: Address
+): void {
+	const reserves = OracleMarketsContract.bind(
+		oracleMarketsAddress
+	).stakingReserves(marketIdentifier);
+	const market = loadMarket(marketIdentifier);
+
+	market.stakingReserve0 = convertBigIntToDecimal(reserves.value0);
+	market.stakingReserve1 = convertBigIntToDecimal(reserves.value1);
+
+	market.save();
+}
+
+export function updateStaking(
+	marketIdentifier: Bytes,
+	oracleMarketsAddress: Address
+): void {
+	const stakingInfo = OracleMarketsContract.bind(
+		oracleMarketsAddress
+	).staking(marketIdentifier);
+	const market = loadMarket(marketIdentifier);
+
+	market.lastAmountStaked = convertBigIntToDecimal(stakingInfo.value0);
+	market.staker0 = stakingInfo.value1;
+	market.staker1 = stakingInfo.value2;
+	market.lastOutcomeStaked = stakingInfo.value3;
+
+	market.save();
 }

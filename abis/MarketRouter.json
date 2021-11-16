@@ -1,0 +1,286 @@
+[
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_factory",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "amountOutToken0",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amountOutToken1",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amountInCMax",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "oracle",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "marketIdentifier",
+        "type": "bytes32"
+      }
+    ],
+    "name": "buyExactTokensForMaxCTokens",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "amountOutToken0Min",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amountOutToken1Min",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amountInC",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "fixedTokenIndex",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "oracle",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "marketIdentifier",
+        "type": "bytes32"
+      }
+    ],
+    "name": "buyMinTokensForExactCTokens",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "eventIdentifier",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "address",
+        "name": "oracle",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "fundingAmount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amountIn",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_for",
+        "type": "uint256"
+      }
+    ],
+    "name": "createFundBetOnMarket",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "factory",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "creator",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "eventIdentifier",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "address",
+        "name": "oracle",
+        "type": "address"
+      }
+    ],
+    "name": "getMarketIdentifier",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "marketIdentifier",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "pure",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_for",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amountInToken",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "oracle",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "marketIdentifier",
+        "type": "bytes32"
+      }
+    ],
+    "name": "redeemWinning",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "amountInToken0",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amountInToken1",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amountOutTokenCMin",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "oracle",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "marketIdentifier",
+        "type": "bytes32"
+      }
+    ],
+    "name": "sellExactTokensForMinCTokens",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "amountInToken0Max",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amountInToken1Max",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amountOutTokenC",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "fixedTokenIndex",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "oracle",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "marketIdentifier",
+        "type": "bytes32"
+      }
+    ],
+    "name": "sellMaxTokensForExactCTokens",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_for",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amountIn",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "oracle",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "marketIdentifier",
+        "type": "bytes32"
+      }
+    ],
+    "name": "stakeForOutcome",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+]

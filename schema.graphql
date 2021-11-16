@@ -1,58 +1,51 @@
-type MarketFactory @entity {
+type OracleFactory @entity {
 	id: ID!
-	marketCount: BigInt!
-	markets: [Market!]! @derivedFrom(field: "factory")
+	oracleCount: BigInt!
+	oracles: [OracleMarkets!]! @derivedFrom(field: "factory")
 }
 
 type Market @entity {
 	id: ID!
 
-	factory: MarketFactory!
+	oracle: OracleMarkets!
 
 	creator: Bytes!
-	oracle: Bytes!
-	identifier: String!
+	eventIdentifier: Bytes!
 
-	reserveC: BigDecimal!
-	reserve0: BigDecimal!
-	reserve1: BigDecimal!
+	marketIdentifier: Bytes!
 
+	# outcome reserves
+	outcomeReserve0: BigDecimal!
+	outcomeReserve1: BigDecimal!
+
+	# staking reserves
+	stakingReserve0: BigDecimal!
+	stakingReserve1: BigDecimal!
+
+	# market details
 	tokenC: Bytes!
-	token0: Bytes!
-	token1: Bytes!
-
-	reserveDoN0: BigDecimal!
-	reserveDoN1: BigDecimal!
-	lastAmountStaked: BigDecimal!
-	staker0: Bytes!
-	staker1: Bytes!
-	lastOutcomeStaked: BigInt!
-	stakes: [Stake!]! @derivedFrom(field: "market")
-
+	feeNumerator: BigInt!
+	feeDenominator: BigInt!
+	fee: BigDecimal! # calculated
+	
+	# state details
 	expireAtBlock: BigInt!
 	donBufferEndsAtBlock: BigInt!
 	resolutionEndsAtBlock: BigInt!
-	expireBufferBlocks: BigInt!
 	donBufferBlocks: BigInt!
 	resolutionBufferBlocks: BigInt!
 	donEscalationCount: BigInt!
 	donEscalationLimit: BigInt!
-	oracleFeeNumerator: BigInt!
-	oracleFeeDenominator: BigInt!
 	outcome: BigInt!
 	stage: BigInt!
-	oracleFee: BigDecimal!
-	oracleFee1: BigDecimal!
+
+	# staking
+	staker0: Bytes!
+	staker1: Bytes!
+	lastAmountStaked: BigDecimal!
+	lastOutcomeStaked: BigInt!
 
 	users: [UserMarket!]! @derivedFrom(field: "market")
-}
-
-type Stake @entity {
-	id: ID! # {user}-{market}
-	market: Market!
-	user: User!
-	stake0: BigDecimal!
-	stake1: BigDecimal!
 }
 
 type User @entity {
@@ -66,10 +59,10 @@ type UserMarket @entity {
 	market: Market!
 }
 
-type Oracle @entity {
+type OracleMarkets @entity {
 	id: ID!
 	delegate: Bytes!
-	tokenC: Bytes!
+	collateralToken: Bytes!
 	isActive: Boolean
 	feeNumerator: BigInt!
 	feeDenominator: BigInt!
@@ -77,4 +70,8 @@ type Oracle @entity {
 	expireBufferBlocks: BigInt!
 	donBufferBlocks: BigInt!
 	resolutionBufferBlocks: BigInt!
+
+	markets: [Market!]! @derivedFrom(field: "oracle")
+
+	factory: OracleFactory!
 }

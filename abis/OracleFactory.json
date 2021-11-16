@@ -9,21 +9,8 @@
         "type": "address"
       }
     ],
-    "name": "OracleRegistered",
+    "name": "OracleCreated",
     "type": "event"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "oracle",
-        "type": "address"
-      }
-    ],
-    "name": "registerOracle",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
   },
   {
     "inputs": [
@@ -73,7 +60,7 @@
         "type": "uint32"
       }
     ],
-    "name": "setupSingleOracle",
+    "name": "createOracle",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
