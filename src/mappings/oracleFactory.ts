@@ -1,6 +1,7 @@
 import { OracleCreated } from "../../generated/OracleFactory/OracleFactory";
 import { OracleFactory } from "../../generated/schema";
 import { OracleMarkets as OracleMarketsTemplate } from "../../generated/templates";
+import { updateOracleMarketsDetails } from "../entities";
 import { FACTORY_ADDRESS, ONE_BI, ZERO_BI } from "../helpers";
 
 export function handleOracleCreated(event: OracleCreated): void {
@@ -11,7 +12,7 @@ export function handleOracleCreated(event: OracleCreated): void {
 	}
 
 	// new oracle entity
-
+	updateOracleMarketsDetails(event.params.oracle);
 	OracleMarketsTemplate.create(event.params.oracle);
 
 	oracleFactory.oracleCount = oracleFactory.oracleCount.plus(ONE_BI);

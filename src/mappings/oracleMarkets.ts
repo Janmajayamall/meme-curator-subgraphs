@@ -25,6 +25,9 @@ export function handleMarketCreated(event: MarketCreated): void {
 		event.params.eventIdentifier,
 		event.address
 	);
+
+	saveUser(event.params.creator);
+	saveUserMarket(event.params.creator, event.params.marketIdentifier);
 }
 
 export function handleOutcomeTraded(event: OutcomeTraded): void {
