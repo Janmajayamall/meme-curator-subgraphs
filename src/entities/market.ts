@@ -1,10 +1,7 @@
 import { Address, Bytes, BigInt } from "@graphprotocol/graph-ts";
 import { Market } from "../../generated/schema";
-import {
-	OracleMarkets as OracleMarketsContract,
-	OracleMarkets__marketConfigResult,
-} from "../../generated/OracleFactory/OracleMarkets";
 import { convertBigIntToDecimal } from "../helpers";
+import { Oracle as OracleContract } from "../../generated/OracleFactory/Oracle";
 
 export function loadMarket(marketIdentifier: Bytes): Market {
 	var market = Market.load(marketIdentifier.toHex());
@@ -16,11 +13,11 @@ export function loadMarket(marketIdentifier: Bytes): Market {
 
 export function updateMarketDetails(
 	marketIdentifier: Bytes,
-	oracleMarketsAddress: Address
+	oracleAddress: Address
 ): void {
-	const details = OracleMarketsContract.bind(
-		oracleMarketsAddress
-	).marketDetails(marketIdentifier);
+	const details = OracleContract.bind(oracleAddress).marketDetails(
+		marketIdentifier
+	);
 	const market = loadMarket(marketIdentifier);
 
 	market.tokenC = details.value0;
@@ -35,11 +32,11 @@ export function updateMarketDetails(
 
 export function updateStateDetails(
 	marketIdentifier: Bytes,
-	oracleMarketsAddress: Address
+	oracleAddress: Address
 ): void {
-	const details = OracleMarketsContract.bind(
-		oracleMarketsAddress
-	).stateDetails(marketIdentifier);
+	const details = OracleContract.bind(oracleAddress).stateDetails(
+		marketIdentifier
+	);
 	const market = loadMarket(marketIdentifier);
 
 	market.expireAtBlock = details.value0;
@@ -59,10 +56,10 @@ export function updateBasicDetails(
 	marketIdentifier: Bytes,
 	creator: Address,
 	eventIdentifier: Bytes,
-	oracleMarketsAddress: Address
+	oracleAddress: Address
 ): void {
 	const market = loadMarket(marketIdentifier);
-	market.oracle = oracleMarketsAddress.toHex();
+	market.oracle = oracleAddress.toHex();
 	market.creator = creator;
 	market.eventIdentifier = eventIdentifier;
 	market.marketIdentifier = marketIdentifier;
@@ -72,11 +69,11 @@ export function updateBasicDetails(
 
 export function updateOutcomeReserves(
 	marketIdentifier: Bytes,
-	oracleMarketsAddress: Address
+	oracleAddress: Address
 ): void {
-	const reserves = OracleMarketsContract.bind(
-		oracleMarketsAddress
-	).outcomeReserves(marketIdentifier);
+	const reserves = OracleContract.bind(oracleAddress).outcomeReserves(
+		marketIdentifier
+	);
 	const market = loadMarket(marketIdentifier);
 
 	market.outcomeReserve0 = convertBigIntToDecimal(reserves.value0);
@@ -87,11 +84,11 @@ export function updateOutcomeReserves(
 
 export function updateStakingReserves(
 	marketIdentifier: Bytes,
-	oracleMarketsAddress: Address
+	oracleAddress: Address
 ): void {
-	const reserves = OracleMarketsContract.bind(
-		oracleMarketsAddress
-	).stakingReserves(marketIdentifier);
+	const reserves = OracleContract.bind(oracleAddress).stakingReserves(
+		marketIdentifier
+	);
 	const market = loadMarket(marketIdentifier);
 
 	market.stakingReserve0 = convertBigIntToDecimal(reserves.value0);
@@ -102,11 +99,11 @@ export function updateStakingReserves(
 
 export function updateStaking(
 	marketIdentifier: Bytes,
-	oracleMarketsAddress: Address
+	oracleAddress: Address
 ): void {
-	const stakingInfo = OracleMarketsContract.bind(
-		oracleMarketsAddress
-	).staking(marketIdentifier);
+	const stakingInfo = OracleContract.bind(oracleAddress).staking(
+		marketIdentifier
+	);
 	const market = loadMarket(marketIdentifier);
 
 	market.lastAmountStaked = convertBigIntToDecimal(stakingInfo.value0);

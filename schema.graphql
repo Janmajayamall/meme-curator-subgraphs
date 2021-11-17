@@ -1,13 +1,13 @@
 type OracleFactory @entity {
 	id: ID!
 	oracleCount: BigInt!
-	oracles: [OracleMarkets!]! @derivedFrom(field: "factory")
+	oracles: [Oracle!]! @derivedFrom(field: "factory")
 }
 
 type Market @entity {
 	id: ID!
 
-	oracle: OracleMarkets!
+	oracle: Oracle!
 
 	creator: Bytes!
 	eventIdentifier: Bytes!
@@ -60,7 +60,7 @@ type UserMarket @entity {
 	market: Market!
 }
 
-type OracleMarkets @entity {
+type Oracle @entity {
 	id: ID!
 	delegate: Bytes!
 	manager: Bytes!

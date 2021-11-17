@@ -7,7 +7,7 @@ import {
 	OutcomeTraded,
 	StakedRedeemed,
 	WinningRedeemed,
-} from "../../generated/OracleFactory/OracleMarkets";
+} from "../../generated/OracleFactory/Oracle";
 import { saveUser, saveUserMarket } from "../entities";
 import {
 	updateBasicDetails,
@@ -16,7 +16,7 @@ import {
 	updateStakingReserves,
 	updateStateDetails,
 } from "../entities/market";
-import { updateOracleMarketsDetails } from "../entities/oracleMarkets";
+import { updateOracleDetails } from "../entities/oracle";
 
 export function handleMarketCreated(event: MarketCreated): void {
 	updateBasicDetails(
@@ -71,9 +71,9 @@ export function handleStakedRedeemed(event: StakedRedeemed): void {
 }
 
 export function handleOracleConfigUpdated(event: OracleConfigUpdated): void {
-	updateOracleMarketsDetails(event.address);
+	updateOracleDetails(event.address);
 }
 
 export function handleDelegateChanged(event: DelegateChanged): void {
-	updateOracleMarketsDetails(event.address);
+	updateOracleDetails(event.address);
 }

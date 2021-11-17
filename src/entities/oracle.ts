@@ -1,28 +1,25 @@
 import { Address, BigInt } from "@graphprotocol/graph-ts";
-import { OracleMarkets as OracleMarketsContract } from "../../generated/OracleFactory/OracleMarkets";
-import { OracleMarkets } from "../../generated/schema";
+import { Oracle as OracleContract } from "../../generated/OracleFactory/Oracle";
+
+import { Oracle } from "../../generated/schema";
 import { FACTORY_ADDRESS } from "../helpers";
 
-export function loadOracleMarkets(
-	oracleMarketsAddress: Address
-): OracleMarkets {
-	var oracleMarkets = OracleMarkets.load(oracleMarketsAddress.toHex());
-	if (!oracleMarkets) {
-		oracleMarkets = new OracleMarkets(oracleMarketsAddress.toHex());
+export function loadOracle(oracleAddress: Address): Oracle {
+	var oracle = Oracle.load(oracleAddress.toHex());
+	if (!oracle) {
+		oracle = new Oracle(oracleAddress.toHex());
 	}
-	return oracleMarkets;
+	return oracle;
 }
 
-export function updateOracleMarketsDetails(
-	oracleMarketsAddress: Address
-): void {
-	const contract = OracleMarketsContract.bind(oracleMarketsAddress);
+export function updateOracleDetails(oracleAddress: Address): void {
+	const contract = OracleContract.bind(oracleAddress);
 	const config = contract.marketConfig();
 	const collateralToken = contract.collateralToken();
 	const delegate = contract.delegate();
 	const manager = contract.manager();
 
-	const oracleContracts = loadOracleMarkets(oracleMarketsAddress);
+	const oracleContracts = loadOracle(oracleAddress);
 	oracleContracts.delegate = delegate;
 	oracleContracts.manager = manager;
 	oracleContracts.collateralToken = collateralToken;

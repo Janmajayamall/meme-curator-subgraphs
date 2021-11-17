@@ -6,7 +6,7 @@ dataSources:
       name: OracleFactory
       network: arbitrum-rinkeby
       source:
-          address: "0xa7db16a8b638607272eAdc1868A8fB28636e1Db2"
+          address: "0x35858C861564F072724658458C1c9C22F5506c36"
           abi: OracleFactory
           startBlock: 6778576
       mapping:
@@ -18,29 +18,29 @@ dataSources:
           abis:
               - name: OracleFactory
                 file: ./abis/OracleFactory.json
-              - name: OracleMarkets
-                file: ./abis/OracleMarkets.json
+              - name: Oracle
+                file: ./abis/Oracle.json
           eventHandlers:
               - event: OracleCreated(indexed address)
                 handler: handleOracleCreated
           file: ./src/mappings/oracleFactory.ts
 templates:
-    - name: OracleMarkets
+    - name: Oracle
       kind: ethereum/contract
       network: arbitrum-rinkeby
       source:
-          abi: OracleMarkets
+          abi: Oracle
       mapping:
           kind: ethereum/events
           apiVersion: 0.0.5
           language: wasm/assemblyscript
-          file: ./src/mappings/oracleMarkets.ts
+          file: ./src/mappings/oracle.ts
           entities:
               - Oracle
               - Market
           abis:
-              - name: OracleMarkets
-                file: ./abis/OracleMarkets.json
+              - name: Oracle
+                file: ./abis/Oracle.json
           eventHandlers:
               - event: MarketCreated(indexed address,indexed bytes32,indexed bytes32)
                 handler: handleMarketCreated
