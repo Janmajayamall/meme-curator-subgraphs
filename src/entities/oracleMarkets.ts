@@ -20,9 +20,11 @@ export function updateOracleMarketsDetails(
 	const config = contract.marketConfig();
 	const collateralToken = contract.collateralToken();
 	const delegate = contract.delegate();
+	const manager = contract.manager();
 
 	const oracleContracts = loadOracleMarkets(oracleMarketsAddress);
 	oracleContracts.delegate = delegate;
+	oracleContracts.manager = manager;
 	oracleContracts.collateralToken = collateralToken;
 
 	// configs

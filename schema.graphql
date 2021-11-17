@@ -26,8 +26,9 @@ type Market @entity {
 	tokenC: Bytes!
 	feeNumerator: BigInt!
 	feeDenominator: BigInt!
-	fee: BigDecimal! # calculated
-	
+	# calculated
+	fee: BigDecimal!
+
 	# state details
 	expireAtBlock: BigInt!
 	donBufferEndsAtBlock: BigInt!
@@ -62,6 +63,7 @@ type UserMarket @entity {
 type OracleMarkets @entity {
 	id: ID!
 	delegate: Bytes!
+	manager: Bytes!
 	collateralToken: Bytes!
 	isActive: Boolean
 	feeNumerator: BigInt!

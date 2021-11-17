@@ -21,6 +21,11 @@
       },
       {
         "internalType": "address",
+        "name": "manager",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
         "name": "_tokenC",
         "type": "address"
       },

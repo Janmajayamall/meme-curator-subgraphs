@@ -8,7 +8,7 @@ dataSources:
       source:
           address: "0xa7db16a8b638607272eAdc1868A8fB28636e1Db2"
           abi: OracleFactory
-          startBlock: 6765743
+          startBlock: 6778576
       mapping:
           kind: ethereum/events
           apiVersion: 0.0.5
