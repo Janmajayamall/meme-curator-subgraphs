@@ -1,4 +1,4 @@
-import { Address } from "@graphprotocol/graph-ts";
+import { Address, BigInt } from "@graphprotocol/graph-ts";
 import { OracleMarkets as OracleMarketsContract } from "../../generated/OracleFactory/OracleMarkets";
 import { OracleMarkets } from "../../generated/schema";
 import { FACTORY_ADDRESS } from "../helpers";
@@ -31,7 +31,7 @@ export function updateOracleMarketsDetails(
 	oracleContracts.expireBufferBlocks = config.value2;
 	oracleContracts.donBufferBlocks = config.value3;
 	oracleContracts.resolutionBufferBlocks = config.value4;
-	oracleContracts.donEscalationLimit = config.value5;
+	oracleContracts.donEscalationLimit = BigInt.fromI32(config.value5);
 	oracleContracts.isActive = config.value6;
 
 	oracleContracts.factory = FACTORY_ADDRESS;

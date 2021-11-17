@@ -1,4 +1,4 @@
-import { Address, Bytes } from "@graphprotocol/graph-ts";
+import { Address, Bytes, BigInt } from "@graphprotocol/graph-ts";
 import { Market } from "../../generated/schema";
 import {
 	OracleMarkets as OracleMarketsContract,
@@ -47,10 +47,10 @@ export function updateStateDetails(
 	market.resolutionEndsAtBlock = details.value2;
 	market.donBufferBlocks = details.value3;
 	market.resolutionBufferBlocks = details.value4;
-	market.donEscalationCount = details.value5;
-	market.donEscalationLimit = details.value6;
-	market.outcome = details.value7;
-	market.stage = details.value8;
+	market.donEscalationCount = BigInt.fromI32(details.value5);
+	market.donEscalationLimit = BigInt.fromI32(details.value6);
+	market.outcome = BigInt.fromI32(details.value7);
+	market.stage = BigInt.fromI32(details.value8);
 
 	market.save();
 }
@@ -58,7 +58,7 @@ export function updateStateDetails(
 export function updateBasicDetails(
 	marketIdentifier: Bytes,
 	creator: Address,
-	eventIdentifier: Address,
+	eventIdentifier: Bytes,
 	oracleMarketsAddress: Address
 ): void {
 	const market = loadMarket(marketIdentifier);
@@ -112,7 +112,7 @@ export function updateStaking(
 	market.lastAmountStaked = convertBigIntToDecimal(stakingInfo.value0);
 	market.staker0 = stakingInfo.value1;
 	market.staker1 = stakingInfo.value2;
-	market.lastOutcomeStaked = stakingInfo.value3;
+	market.lastOutcomeStaked = BigInt.fromI32(stakingInfo.value3);
 
 	market.save();
 }

@@ -1,6 +1,5 @@
 import { Address, Bytes } from "@graphprotocol/graph-ts";
-import { getStakes } from ".";
-import { User, UserMarket } from "../../generated/schema";
+import { UserMarket } from "../../generated/schema";
 
 export function loadUserMarket(
 	userAddress: Address,

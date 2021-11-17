@@ -70,7 +70,7 @@ export function handleStakedRedeemed(event: StakedRedeemed): void {
 	saveUserMarket(event.params.by, event.params.marketIdentifier);
 }
 
-export function handleOracleConfigUpdate(event: OracleConfigUpdated): void {
+export function handleOracleConfigUpdated(event: OracleConfigUpdated): void {
 	updateOracleMarketsDetails(event.address);
 }
 
