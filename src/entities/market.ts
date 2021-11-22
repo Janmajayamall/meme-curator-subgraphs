@@ -139,6 +139,7 @@ export function updateTradeVolume(
 	market.tradeVolume = market.tradeVolume.plus(
 		convertBigIntToDecimal(increaserBy)
 	);
+	market.totalVolume = market.tradeVolume.plus(market.stakeVolume);
 	market.lastActionTimestamp = timestamp;
 	market.save();
 }
@@ -157,6 +158,7 @@ export function updateStakeVolume(
 		convertBigIntToDecimal(reserves.value1)
 	);
 	market.lastActionTimestamp = timestamp;
+	market.totalVolume = market.stakeVolume.plus(market.tradeVolume);
 
 	market.save();
 }
