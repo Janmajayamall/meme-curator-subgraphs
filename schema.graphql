@@ -17,6 +17,9 @@ type Market @entity {
 	# outcome reserves
 	outcomeReserve0: BigDecimal!
 	outcomeReserve1: BigDecimal!
+	# calculated
+	probability0: BigDecimal!
+	probability1: BigDecimal!
 
 	# staking reserves
 	stakingReserve0: BigDecimal!
@@ -46,7 +49,13 @@ type Market @entity {
 	lastAmountStaked: BigDecimal!
 	lastOutcomeStaked: BigInt!
 
+	# extra info
 	users: [UserMarket!]! @derivedFrom(field: "market")
+	timestamp: BigInt!
+	tradeVolume: BigDecimal!
+	stakeVolume: BigDecimal!
+	totalVolume: BigDecimal!
+	lastActionTimestamp: BigInt!
 }
 
 type User @entity {

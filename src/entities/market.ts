@@ -1,4 +1,4 @@
-import { Address, Bytes, BigInt } from "@graphprotocol/graph-ts";
+import { Address, Bytes, BigInt, BigDecimal } from "@graphprotocol/graph-ts";
 import { Market } from "../../generated/schema";
 import { convertBigIntToDecimal } from "../helpers";
 import { Oracle as OracleContract } from "../../generated/OracleFactory/Oracle";
@@ -13,7 +13,8 @@ export function loadMarket(marketIdentifier: Bytes): Market {
 
 export function updateMarketDetails(
 	marketIdentifier: Bytes,
-	oracleAddress: Address
+	oracleAddress: Address,
+	timestamp: BigInt
 ): void {
 	const details = OracleContract.bind(oracleAddress).marketDetails(
 		marketIdentifier
@@ -26,6 +27,7 @@ export function updateMarketDetails(
 	market.fee = details.value1
 		.toBigDecimal()
 		.div(details.value2.toBigDecimal());
+	market.timestamp = timestamp;
 
 	market.save();
 }
@@ -78,6 +80,14 @@ export function updateOutcomeReserves(
 
 	market.outcomeReserve0 = convertBigIntToDecimal(reserves.value0);
 	market.outcomeReserve1 = convertBigIntToDecimal(reserves.value1);
+	// calculate probability for both outcomes
+	const denom: BigDecimal = convertBigIntToDecimal(reserves.value0).plus(
+		convertBigIntToDecimal(reserves.value1)
+	);
+	market.probability1 = convertBigIntToDecimal(reserves.value0).div(denom);
+	market.probability0 = convertBigIntToDecimal(reserves.value1).div(denom);
+	// update trade volume
+	
 
 	market.save();
 }

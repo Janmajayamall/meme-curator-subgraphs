@@ -15,6 +15,7 @@ import {
 	updateStaking,
 	updateStakingReserves,
 	updateStateDetails,
+	updateMarketDetails,
 } from "../entities/market";
 import { updateOracleDetails } from "../entities/oracle";
 
@@ -26,6 +27,11 @@ export function handleMarketCreated(event: MarketCreated): void {
 		event.address
 	);
 
+	updateMarketDetails(
+		event.params.marketIdentifier,
+		event.address,
+		event.block.timestamp
+	);
 	saveUser(event.params.creator);
 	saveUserMarket(event.params.creator, event.params.marketIdentifier);
 }
