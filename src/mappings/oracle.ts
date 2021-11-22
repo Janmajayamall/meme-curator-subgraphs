@@ -1,10 +1,12 @@
+import { log } from "@graphprotocol/graph-ts";
 import {
 	DelegateChanged,
 	MarketCreated,
 	OracleConfigUpdated,
+	OutcomeBought,
 	OutcomeSet,
+	OutcomeSold,
 	OutcomeStaked,
-	OutcomeTraded,
 	StakedRedeemed,
 	WinningRedeemed,
 } from "../../generated/OracleFactory/Oracle";
@@ -15,6 +17,8 @@ import {
 	updateStakingReserves,
 	updateStateDetails,
 	updateDetails,
+	updateTradeVolume,
+	updateStakeVolume,
 } from "../entities/market";
 import { updateOracleDetails } from "../entities/oracle";
 
@@ -26,6 +30,7 @@ export function handleMarketCreated(event: MarketCreated): void {
 		event.address,
 		event.block.timestamp
 	);
+
 	updateStateDetails(event.params.marketIdentifier, event.address);
 	updateOutcomeReserves(event.params.marketIdentifier, event.address);
 	updateStakingReserves(event.params.marketIdentifier, event.address);
@@ -35,9 +40,27 @@ export function handleMarketCreated(event: MarketCreated): void {
 	saveUserMarket(event.params.creator, event.params.marketIdentifier);
 }
 
-export function handleOutcomeTraded(event: OutcomeTraded): void {
+export function handleOutcomeBought(event: OutcomeBought): void {
 	updateOutcomeReserves(event.params.marketIdentifier, event.address);
 	updateStateDetails(event.params.marketIdentifier, event.address);
+	updateTradeVolume(
+		event.params.marketIdentifier,
+		event.params.amount,
+		event.block.timestamp
+	);
+
+	saveUser(event.params.by);
+	saveUserMarket(event.params.by, event.params.marketIdentifier);
+}
+
+export function handleOutcomeSold(event: OutcomeSold): void {
+	updateOutcomeReserves(event.params.marketIdentifier, event.address);
+	updateStateDetails(event.params.marketIdentifier, event.address);
+	updateTradeVolume(
+		event.params.marketIdentifier,
+		event.params.amount,
+		event.block.timestamp
+	);
 
 	saveUser(event.params.by);
 	saveUserMarket(event.params.by, event.params.marketIdentifier);
@@ -47,14 +70,17 @@ export function handleOutcomeStaked(event: OutcomeStaked): void {
 	updateStakingReserves(event.params.marketIdentifier, event.address);
 	updateStaking(event.params.marketIdentifier, event.address);
 	updateStateDetails(event.params.marketIdentifier, event.address);
+	updateStakeVolume(
+		event.params.marketIdentifier,
+		event.address,
+		event.block.timestamp
+	);
 
 	saveUser(event.params.by);
 	saveUserMarket(event.params.by, event.params.marketIdentifier);
 }
 
 export function handleOutcomeSet(event: OutcomeSet): void {
-	updateStakingReserves(event.params.marketIdentifier, event.address);
-	updateStaking(event.params.marketIdentifier, event.address);
 	updateStateDetails(event.params.marketIdentifier, event.address);
 }
 

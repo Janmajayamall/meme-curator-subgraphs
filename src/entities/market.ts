@@ -51,8 +51,9 @@ export function updateDetails(
 
 	// update extra info
 	market.timestamp = timestamp;
-}
 
+	market.save();
+}
 export function updateStateDetails(
 	marketIdentifier: Bytes,
 	oracleAddress: Address
@@ -125,6 +126,37 @@ export function updateStaking(
 	market.staker0 = stakingInfo.value1;
 	market.staker1 = stakingInfo.value2;
 	market.lastOutcomeStaked = BigInt.fromI32(stakingInfo.value3);
+
+	market.save();
+}
+
+export function updateTradeVolume(
+	marketIdentifier: Bytes,
+	increaserBy: BigInt,
+	timestamp: BigInt
+): void {
+	const market = loadMarket(marketIdentifier);
+	market.tradeVolume = market.tradeVolume.plus(
+		convertBigIntToDecimal(increaserBy)
+	);
+	market.lastActionTimestamp = timestamp;
+	market.save();
+}
+
+export function updateStakeVolume(
+	marketIdentifier: Bytes,
+	oracleAddress: Address,
+	timestamp: BigInt
+): void {
+	const market = loadMarket(marketIdentifier);
+	const reserves = OracleContract.bind(oracleAddress).stakingReserves(
+		marketIdentifier
+	);
+
+	market.stakeVolume = convertBigIntToDecimal(reserves.value0).plus(
+		convertBigIntToDecimal(reserves.value1)
+	);
+	market.lastActionTimestamp = timestamp;
 
 	market.save();
 }

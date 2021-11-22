@@ -6,9 +6,9 @@ dataSources:
       name: OracleFactory
       network: arbitrum-rinkeby
       source:
-          address: "0x35858C861564F072724658458C1c9C22F5506c36"
+          address: "0x92725a5AE290c4b8C972aF932E8Bf90a335d94Da"
           abi: OracleFactory
-          startBlock: 6820332
+          startBlock: 6935630
       mapping:
           kind: ethereum/events
           apiVersion: 0.0.5
@@ -44,9 +44,9 @@ templates:
           eventHandlers:
               - event: MarketCreated(indexed address,indexed bytes32,indexed bytes32)
                 handler: handleMarketCreated
-              - event: OutcomeBought(indexed bytes32,indexed address,uint256 amount)
-                handle: handleOutcomeBought
-              - event: OutcomeSold(indexed bytes32,indexed address,uint256 amount)
+              - event: OutcomeBought(indexed bytes32,indexed address,uint256)
+                handler: handleOutcomeBought
+              - event: OutcomeSold(indexed bytes32,indexed address,uint256)
                 handler: handleOutcomeSold
               - event: OutcomeStaked(indexed bytes32,indexed address)
                 handler: handleOutcomeStaked
