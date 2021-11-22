@@ -7,23 +7,11 @@ type OracleFactory @entity {
 type Market @entity {
 	id: ID!
 
+	# basic details
 	oracle: Oracle!
-
 	creator: Bytes!
 	eventIdentifier: Bytes!
-
 	marketIdentifier: Bytes!
-
-	# outcome reserves
-	outcomeReserve0: BigDecimal!
-	outcomeReserve1: BigDecimal!
-	# calculated
-	probability0: BigDecimal!
-	probability1: BigDecimal!
-
-	# staking reserves
-	stakingReserve0: BigDecimal!
-	stakingReserve1: BigDecimal!
 
 	# market details
 	tokenC: Bytes!
@@ -31,6 +19,12 @@ type Market @entity {
 	feeDenominator: BigInt!
 	# calculated
 	fee: BigDecimal!
+
+	# token ids
+	oToken0Id: BigInt!
+	oToken1Id: BigInt!
+	sToken0Id: BigInt!
+	sToken1Id: BigInt!
 
 	# state details
 	expireAtBlock: BigInt!
@@ -42,6 +36,17 @@ type Market @entity {
 	donEscalationLimit: BigInt!
 	outcome: BigInt!
 	stage: BigInt!
+
+	# outcome reserves
+	outcomeReserve0: BigDecimal!
+	outcomeReserve1: BigDecimal!
+	# calculated
+	probability0: BigDecimal!
+	probability1: BigDecimal!
+
+	# staking reserves
+	stakingReserve0: BigDecimal!
+	stakingReserve1: BigDecimal!
 
 	# staking
 	staker0: Bytes!

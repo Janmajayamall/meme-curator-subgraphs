@@ -11,25 +11,46 @@ export function loadMarket(marketIdentifier: Bytes): Market {
 	return market;
 }
 
-export function updateMarketDetails(
+export function updateDetails(
 	marketIdentifier: Bytes,
+	creator: Address,
+	eventIdentifier: Bytes,
 	oracleAddress: Address,
 	timestamp: BigInt
 ): void {
+	const market = loadMarket(marketIdentifier);
+
+	// update basic details
+	market.oracle = oracleAddress.toHex();
+	market.creator = creator;
+	market.eventIdentifier = eventIdentifier;
+	market.marketIdentifier = marketIdentifier;
+
+	// update market details
 	const details = OracleContract.bind(oracleAddress).marketDetails(
 		marketIdentifier
 	);
-	const market = loadMarket(marketIdentifier);
-
 	market.tokenC = details.value0;
 	market.feeNumerator = details.value1;
 	market.feeDenominator = details.value2;
 	market.fee = details.value1
 		.toBigDecimal()
 		.div(details.value2.toBigDecimal());
-	market.timestamp = timestamp;
 
-	market.save();
+	// update token ids
+	const oTokenIds = OracleContract.bind(oracleAddress).getOutcomeTokenIds(
+		marketIdentifier
+	);
+	market.oToken0Id = oTokenIds.value0;
+	market.oToken1Id = oTokenIds.value1;
+	const sTokenIds = OracleContract.bind(oracleAddress).getReserveTokenIds(
+		marketIdentifier
+	);
+	market.sToken0Id = sTokenIds.value0;
+	market.sToken1Id = sTokenIds.value1;
+
+	// update extra info
+	market.timestamp = timestamp;
 }
 
 export function updateStateDetails(
@@ -54,21 +75,6 @@ export function updateStateDetails(
 	market.save();
 }
 
-export function updateBasicDetails(
-	marketIdentifier: Bytes,
-	creator: Address,
-	eventIdentifier: Bytes,
-	oracleAddress: Address
-): void {
-	const market = loadMarket(marketIdentifier);
-	market.oracle = oracleAddress.toHex();
-	market.creator = creator;
-	market.eventIdentifier = eventIdentifier;
-	market.marketIdentifier = marketIdentifier;
-
-	market.save();
-}
-
 export function updateOutcomeReserves(
 	marketIdentifier: Bytes,
 	oracleAddress: Address
@@ -87,7 +93,6 @@ export function updateOutcomeReserves(
 	market.probability1 = convertBigIntToDecimal(reserves.value0).div(denom);
 	market.probability0 = convertBigIntToDecimal(reserves.value1).div(denom);
 	// update trade volume
-	
 
 	market.save();
 }

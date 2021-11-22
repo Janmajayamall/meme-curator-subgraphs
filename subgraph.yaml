@@ -44,8 +44,10 @@ templates:
           eventHandlers:
               - event: MarketCreated(indexed address,indexed bytes32,indexed bytes32)
                 handler: handleMarketCreated
-              - event: OutcomeTraded(indexed bytes32,indexed address)
-                handler: handleOutcomeTraded
+              - event: OutcomeBought(indexed bytes32,indexed address,uint256 amount)
+                handle: handleOutcomeBought
+              - event: OutcomeSold(indexed bytes32,indexed address,uint256 amount)
+                handler: handleOutcomeSold
               - event: OutcomeStaked(indexed bytes32,indexed address)
                 handler: handleOutcomeStaked
               - event: OutcomeSet(indexed bytes32)

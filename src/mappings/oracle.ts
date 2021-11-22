@@ -10,28 +10,27 @@ import {
 } from "../../generated/OracleFactory/Oracle";
 import { saveUser, saveUserMarket } from "../entities";
 import {
-	updateBasicDetails,
 	updateOutcomeReserves,
 	updateStaking,
 	updateStakingReserves,
 	updateStateDetails,
-	updateMarketDetails,
+	updateDetails,
 } from "../entities/market";
 import { updateOracleDetails } from "../entities/oracle";
 
 export function handleMarketCreated(event: MarketCreated): void {
-	updateBasicDetails(
+	updateDetails(
 		event.params.marketIdentifier,
 		event.params.creator,
 		event.params.eventIdentifier,
-		event.address
-	);
-
-	updateMarketDetails(
-		event.params.marketIdentifier,
 		event.address,
 		event.block.timestamp
 	);
+	updateStateDetails(event.params.marketIdentifier, event.address);
+	updateOutcomeReserves(event.params.marketIdentifier, event.address);
+	updateStakingReserves(event.params.marketIdentifier, event.address);
+	updateStaking(event.params.marketIdentifier, event.address);
+
 	saveUser(event.params.creator);
 	saveUserMarket(event.params.creator, event.params.marketIdentifier);
 }
