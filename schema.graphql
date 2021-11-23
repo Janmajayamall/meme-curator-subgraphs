@@ -54,6 +54,14 @@ type Market @entity {
 	lastAmountStaked: BigDecimal!
 	lastOutcomeStaked: BigInt!
 
+	# history
+	tradeHistory: [TradeHistory!]! @derivedFrom(field: "market")
+	stakeHistory: [StakeHistory!]! @derivedFrom(field: "market")
+
+	# positions
+	tradePositions: [TradePosition!]! @derivedFrom(field: "market")
+	stakePositions: [StakePosition!]! @derivedFrom(field: "market")
+
 	# extra info
 	users: [UserMarket!]! @derivedFrom(field: "market")
 	timestamp: BigInt!
@@ -65,13 +73,56 @@ type Market @entity {
 
 type User @entity {
 	id: ID!
+
+	tradeHistory: [TradeHistory!]! @derivedFrom(field: "user")
+	stakeHistory: [StakeHistory!]! @derivedFrom(field: "user")
+	tradePositions: [TradePosition!]! @derivedFrom(field: "user")
+	stakePositions: [StakePosition!]! @derivedFrom(field: "user")
 	markets: [UserMarket!]! @derivedFrom(field: "user")
+}
+
+type TradeHistory @entity {
+	id: ID! # {user}-{market}
+	user: User!
+	market: Market!
+	amount0: BigDecimal!
+	amount1: BigDecimal!
+	amountC: BigDecimal!
+	timestamp: BigInt!
+}
+
+type StakeHistory @entity {
+	id: ID! # {user}-{market}
+	user: User!
+	market: Market!
+	amountC: BigDecimal!
+	outcomeStaked: BigInt!
+	timestamp: BigInt!
+}
+
+type TradePosition @entity {
+	id: ID! # {user}-{market}
+	user: User!
+	market: Market!
+	amount0: BigDecimal!
+	amount1: BigDecimal!
+	timestamp: BigInt!
+}
+
+type StakePosition @entity {
+	id: ID! # {user}-{market}
+	user: User!
+	market: Market!
+	amountC0: BigDecimal!
+	amountC1: BigDecimal!
+	timestamp: BigInt!
 }
 
 type UserMarket @entity {
 	id: ID! # {user}-{market}
 	user: User!
 	market: Market!
+	timestamp: BigInt!
 }
 
 type Oracle @entity {
@@ -87,7 +138,16 @@ type Oracle @entity {
 	donBufferBlocks: BigInt!
 	resolutionBufferBlocks: BigInt!
 
+	tokenCReserve: [OracleTokenCReserve!]! @derivedFrom(field: "oracle")
+
 	markets: [Market!]! @derivedFrom(field: "oracle")
 
 	factory: OracleFactory!
+}
+
+type OracleTokenCReserve @entity {
+	id: ID! # {oracleAddress}-{tokenCAddress}
+	oracle: Oracle!
+	tokenC: Bytes!
+	reserve: BigDecimal!
 }

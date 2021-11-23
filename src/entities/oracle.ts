@@ -4,6 +4,11 @@ import { Oracle as OracleContract } from "../../generated/OracleFactory/Oracle";
 import { Oracle } from "../../generated/schema";
 import { FACTORY_ADDRESS } from "../helpers";
 
+export function getOracleCollateralToken(oracleAddress: Address): Address {
+	const address: Address = loadOracle(oracleAddress).collateralToken;
+	return address;
+}
+
 export function loadOracle(oracleAddress: Address): Oracle {
 	var oracle = Oracle.load(oracleAddress.toHex());
 	if (!oracle) {

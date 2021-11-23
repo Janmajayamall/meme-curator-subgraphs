@@ -1,4 +1,4 @@
-import { Address, Bytes } from "@graphprotocol/graph-ts";
+import { Address, Bytes, BigInt } from "@graphprotocol/graph-ts";
 import { UserMarket } from "../../generated/schema";
 
 export function loadUserMarket(
@@ -17,8 +17,10 @@ export function loadUserMarket(
 
 export function saveUserMarket(
 	userAddress: Address,
-	marketIdentifier: Bytes
+	marketIdentifier: Bytes,
+	timestamp: BigInt
 ): void {
 	const userMarket = loadUserMarket(userAddress, marketIdentifier);
+	userMarket.timestamp = timestamp;
 	userMarket.save();
 }

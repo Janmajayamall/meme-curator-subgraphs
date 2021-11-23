@@ -20,6 +20,8 @@ dataSources:
                 file: ./abis/OracleFactory.json
               - name: Oracle
                 file: ./abis/Oracle.json
+              - name: ERC20
+                file: ./abis/ERC20.json
           eventHandlers:
               - event: OracleCreated(indexed address)
                 handler: handleOracleCreated
@@ -41,6 +43,8 @@ templates:
           abis:
               - name: Oracle
                 file: ./abis/Oracle.json
+              - name: ERC20
+                file: ./abis/ERC20.json
           eventHandlers:
               - event: MarketCreated(indexed address,indexed bytes32,indexed bytes32)
                 handler: handleMarketCreated

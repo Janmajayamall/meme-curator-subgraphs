@@ -1,4 +1,4 @@
-import { log } from "@graphprotocol/graph-ts";
+import { Address, BigDecimal, log } from "@graphprotocol/graph-ts";
 import {
 	DelegateChanged,
 	MarketCreated,
@@ -19,8 +19,19 @@ import {
 	updateDetails,
 	updateTradeVolume,
 	updateStakeVolume,
+	getTokenCAddress,
+	getDeltaOutcomeTokenReserves,
+	getOutcomeTokenReserves,
+	getOutcomeTokenReservesFromOracleContract,
 } from "../entities/market";
-import { updateOracleDetails } from "../entities/oracle";
+import {
+	updateOracleDetails,
+	getOracleCollateralToken,
+} from "../entities/oracle";
+import {
+	getDeltaTokenCReserveForOracle,
+	updateOracleTokenCReserve,
+} from "../entities/oracleTokenCReserve";
 
 export function handleMarketCreated(event: MarketCreated): void {
 	updateDetails(
@@ -37,10 +48,40 @@ export function handleMarketCreated(event: MarketCreated): void {
 	updateStaking(event.params.marketIdentifier, event.address);
 
 	saveUser(event.params.creator);
-	saveUserMarket(event.params.creator, event.params.marketIdentifier);
+	saveUserMarket(
+		event.params.creator,
+		event.params.marketIdentifier,
+		event.block.timestamp
+	);
 }
 
 export function handleOutcomeBought(event: OutcomeBought): void {
+	// calculate amountIn, amountOut0, amountOut1
+	const tokenCAddress: Address = getTokenCAddress(
+		event.params.marketIdentifier
+	);
+	const deltaTokenCReserve: BigDecimal = getDeltaTokenCReserveForOracle(
+		event.address,
+		tokenCAddress
+	);
+	const prevOutcomeTokenReserves: [
+		BigDecimal,
+		BigDecimal
+	] = getOutcomeTokenReserves(event.params.marketIdentifier);
+	const latestOutcomeTokenReserves: [
+		BigDecimal,
+		BigDecimal
+	] = getOutcomeTokenReservesFromOracleContract(
+		event.params.marketIdentifier,
+		event.address
+	);
+	const amountOut0: BigDecimal = prevOutcomeTokenReserves[0]
+		.plus(deltaTokenCReserve)
+		.minus(latestOutcomeTokenReserves[0]);
+	const amountOut1: BigDecimal = prevOutcomeTokenReserves[1]
+		.plus(deltaTokenCReserve)
+		.minus(latestOutcomeTokenReserves[1]);
+
 	updateOutcomeReserves(event.params.marketIdentifier, event.address);
 	updateStateDetails(event.params.marketIdentifier, event.address);
 	updateTradeVolume(
@@ -50,7 +91,11 @@ export function handleOutcomeBought(event: OutcomeBought): void {
 	);
 
 	saveUser(event.params.by);
-	saveUserMarket(event.params.by, event.params.marketIdentifier);
+	saveUserMarket(
+		event.params.by,
+		event.params.marketIdentifier,
+		event.block.timestamp
+	);
 }
 
 export function handleOutcomeSold(event: OutcomeSold): void {
@@ -63,7 +108,11 @@ export function handleOutcomeSold(event: OutcomeSold): void {
 	);
 
 	saveUser(event.params.by);
-	saveUserMarket(event.params.by, event.params.marketIdentifier);
+	saveUserMarket(
+		event.params.by,
+		event.params.marketIdentifier,
+		event.block.timestamp
+	);
 }
 
 export function handleOutcomeStaked(event: OutcomeStaked): void {
@@ -77,7 +126,11 @@ export function handleOutcomeStaked(event: OutcomeStaked): void {
 	);
 
 	saveUser(event.params.by);
-	saveUserMarket(event.params.by, event.params.marketIdentifier);
+	saveUserMarket(
+		event.params.by,
+		event.params.marketIdentifier,
+		event.block.timestamp
+	);
 }
 
 export function handleOutcomeSet(event: OutcomeSet): void {
@@ -89,7 +142,11 @@ export function handleWinningRedeemed(event: WinningRedeemed): void {
 	updateStateDetails(event.params.marketIdentifier, event.address);
 
 	saveUser(event.params.by);
-	saveUserMarket(event.params.by, event.params.marketIdentifier);
+	saveUserMarket(
+		event.params.by,
+		event.params.marketIdentifier,
+		event.block.timestamp
+	);
 }
 
 export function handleStakedRedeemed(event: StakedRedeemed): void {
@@ -98,11 +155,19 @@ export function handleStakedRedeemed(event: StakedRedeemed): void {
 	updateStateDetails(event.params.marketIdentifier, event.address);
 
 	saveUser(event.params.by);
-	saveUserMarket(event.params.by, event.params.marketIdentifier);
+	saveUserMarket(
+		event.params.by,
+		event.params.marketIdentifier,
+		event.block.timestamp
+	);
 }
 
 export function handleOracleConfigUpdated(event: OracleConfigUpdated): void {
 	updateOracleDetails(event.address);
+
+	// update tokenC reserve
+	const tokenCAddress: Address = getOracleCollateralToken(event.address);
+	updateOracleTokenCReserve(event.address, tokenCAddress);
 }
 
 export function handleDelegateChanged(event: DelegateChanged): void {
