@@ -1,4 +1,4 @@
-import { Address } from "@graphprotocol/graph-ts";
+import { Address, Bytes } from "@graphprotocol/graph-ts";
 import { OracleCreated } from "../../generated/OracleFactory/OracleFactory";
 import { OracleFactory } from "../../generated/schema";
 import { Oracle as OracleTemplate } from "../../generated/templates";
@@ -18,9 +18,7 @@ export function handleOracleCreated(event: OracleCreated): void {
 	OracleTemplate.create(event.params.oracle);
 
 	// update tokenC reserves
-	const tokenCAddress: Address = getOracleCollateralToken(
-		event.params.oracle
-	);
+	const tokenCAddress = getOracleCollateralToken(event.params.oracle);
 	updateOracleTokenCReserve(event.params.oracle, tokenCAddress);
 
 	oracleFactory.oracleCount = oracleFactory.oracleCount.plus(ONE_BI);

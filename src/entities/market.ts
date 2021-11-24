@@ -1,50 +1,56 @@
 import { Address, Bytes, BigInt, BigDecimal } from "@graphprotocol/graph-ts";
 import { Market } from "../../generated/schema";
-import { convertBigIntToDecimal } from "../helpers";
+import {
+	convertAddressBytesToAddress,
+	convertBigIntToDecimal,
+	Staking,
+	OutcomeTokenReserves,
+} from "../helpers";
 import { Oracle as OracleContract } from "../../generated/OracleFactory/Oracle";
 
 export function getStakingFromOracleContract(
 	marketIdentifier: Bytes,
 	oracleAddress: Address
-): {
-	lastAmountStaked: BigDecimal;
-	staker0: Address;
-	staker1: Address;
-	lastOutcomeStaked: BigInt;
-} {
+): Staking {
 	const staking = OracleContract.bind(oracleAddress).staking(
 		marketIdentifier
 	);
-	return {
-		lastAmountStaked: convertBigIntToDecimal(staking.value0),
-		staker0: staking.value1,
-		staker1: staking.value2,
-		lastOutcomeStaked: staking.value3,
-	};
+
+	const res: Staking = new Staking();
+	res.lastAmountStaked = convertBigIntToDecimal(staking.value0);
+	res.staker0 = staking.value1;
+	res.staker1 = staking.value2;
+	res.lastOutcomeStaked = BigInt.fromI32(staking.value3);
+	return res;
 }
 
 export function getOutcomeTokenReservesFromOracleContract(
 	marketIdentifier: Bytes,
 	oracleAddress: Address
-): [BigDecimal, BigDecimal] {
+): OutcomeTokenReserves {
 	const reserves = OracleContract.bind(oracleAddress).outcomeReserves(
 		marketIdentifier
 	);
-	return [
-		convertBigIntToDecimal(reserves.value0),
-		convertBigIntToDecimal(reserves.value1),
-	];
+
+	const res: OutcomeTokenReserves = new OutcomeTokenReserves();
+	res.reserve0 = convertBigIntToDecimal(reserves.value0);
+	res.reserve1 = convertBigIntToDecimal(reserves.value1);
+	return res;
 }
 
 export function getOutcomeTokenReserves(
 	marketIdentifier: Bytes
-): [BigDecimal, BigDecimal] {
+): OutcomeTokenReserves {
 	const market = loadMarket(marketIdentifier);
-	return [market.outcomeReserve0, market.outcomeReserve1];
+
+	const res: OutcomeTokenReserves = new OutcomeTokenReserves();
+	res.reserve0 = market.outcomeReserve0;
+	res.reserve1 = market.outcomeReserve1;
+	return res;
 }
 
 export function getTokenCAddress(marketIdentifier: Bytes): Address {
-	return loadMarket(marketIdentifier).tokenC;
+	return convertAddressBytesToAddress(loadMarket(marketIdentifier).tokenC);
 }
 
 export function getTradesCount(marketIdentifier: Bytes): BigInt {

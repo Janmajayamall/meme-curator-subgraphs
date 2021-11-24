@@ -40,7 +40,7 @@ import { updateStakeHistory } from "../entities/stakeHistory";
 import { updateStakePosition } from "../entities/stakePosition";
 import { updateTradeHistory } from "../entities/tradeHistory";
 import { updateTradePosition } from "../entities/tradePosition";
-import { ONE_BI, ZERO_BD } from "../helpers";
+import { ONE_BD, ONE_BI, Staking, ZERO_BD, TradeAmount } from "../helpers";
 
 /**
  * Calculates amountC, amount0, amount1 of a trade
@@ -49,10 +49,11 @@ import { ONE_BI, ZERO_BD } from "../helpers";
  * then it's a sell. Otherwise, there was no trade & someone just wasted
  * a bunch of money on fee.
  */
+
 export function calculateTradeAmounts(
 	marketIdentifier: Bytes,
 	oracleAddress: Address
-): { amountC: BigDecimal; amount0: BigDecimal; amount1: BigDecimal } {
+): TradeAmount {
 	const tokenCAddress: Address = getTokenCAddress(marketIdentifier);
 	const prevTokenCReserve: BigDecimal = getTokenCReserve(
 		oracleAddress,
@@ -64,46 +65,41 @@ export function calculateTradeAmounts(
 	);
 	const amountC: BigDecimal = latestTokenCReserve.minus(prevTokenCReserve);
 
-	const prevOutcomeTokenReserves: [
-		BigDecimal,
-		BigDecimal
-	] = getOutcomeTokenReserves(marketIdentifier);
-	const latestOutcomeTokenReserves: [
-		BigDecimal,
-		BigDecimal
-	] = getOutcomeTokenReservesFromOracleContract(
+	const prevOutcomeTokenReserves = getOutcomeTokenReserves(marketIdentifier);
+	const latestOutcomeTokenReserves = getOutcomeTokenReservesFromOracleContract(
 		marketIdentifier,
 		oracleAddress
 	);
 
-	let amount0: BigDecimal;
-	let amount1: BigDecimal;
+	let amount0: BigDecimal = ZERO_BD;
+	let amount1: BigDecimal = ZERO_BD;
 
 	/**
 	 * delta > 0 -> buy side
 	 * delta < 0 -> sell side
 	 */
 	if (amountC.gt(ZERO_BD)) {
-		amount0 = prevOutcomeTokenReserves[0]
+		amount0 = prevOutcomeTokenReserves.reserve0
 			.plus(amountC)
-			.minus(latestOutcomeTokenReserves[0]);
-		amount1 = prevOutcomeTokenReserves[1]
+			.minus(latestOutcomeTokenReserves.reserve0);
+		amount1 = prevOutcomeTokenReserves.reserve1
 			.plus(amountC)
-			.minus(latestOutcomeTokenReserves[1]);
+			.minus(latestOutcomeTokenReserves.reserve1);
 	} else if (amountC.lt(ZERO_BD)) {
-		amount0 = latestOutcomeTokenReserves[0]
+		amount0 = latestOutcomeTokenReserves.reserve0
 			.minus(amountC)
-			.minus(prevOutcomeTokenReserves[0]);
-		amount1 = latestOutcomeTokenReserves[1]
+			.minus(prevOutcomeTokenReserves.reserve0);
+		amount1 = latestOutcomeTokenReserves.reserve1
 			.minus(amountC)
-			.minus(prevOutcomeTokenReserves[1]);
+			.minus(prevOutcomeTokenReserves.reserve1);
 	}
 
-	return {
-		amountC: amountC,
-		amount0: amount0,
-		amount1: amount1,
-	};
+	let res: TradeAmount = new TradeAmount();
+	res.amountC = amountC;
+	res.amount0 = amount0;
+	res.amount1 = amount1;
+
+	return res;
 }
 
 export function handleMarketCreated(event: MarketCreated): void {
@@ -130,7 +126,7 @@ export function handleMarketCreated(event: MarketCreated): void {
 
 export function handleOutcomeTraded(event: OutcomeTraded): void {
 	// calculate trade amounts
-	const tradeAmounts = calculateTradeAmounts(
+	const tradeAmounts: TradeAmount = calculateTradeAmounts(
 		event.params.marketIdentifier,
 		event.address
 	);
@@ -184,12 +180,12 @@ export function handleOutcomeTraded(event: OutcomeTraded): void {
 
 export function handleOutcomeStaked(event: OutcomeStaked): void {
 	// latest amount staked
-	const latestStaking = getStakingFromOracleContract(
+	const latestStaking: Staking = getStakingFromOracleContract(
 		event.params.marketIdentifier,
 		event.address
 	);
-	const lastAmountStaked = latestStaking.lastAmountStaked;
-	const lastOutcomeStaked = latestStaking.lastOutcomeStaked;
+	const lastAmountStaked = ONE_BD;
+	const lastOutcomeStaked = ONE_BI;
 
 	// update user interaction
 	saveUser(event.params.by);
@@ -264,7 +260,7 @@ export function handleOracleConfigUpdated(event: OracleConfigUpdated): void {
 	updateOracleDetails(event.address);
 
 	// update tokenC reserve
-	const tokenCAddress: Address = getOracleCollateralToken(event.address);
+	const tokenCAddress = getOracleCollateralToken(event.address);
 	updateOracleTokenCReserve(event.address, tokenCAddress);
 }
 

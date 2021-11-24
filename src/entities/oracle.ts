@@ -1,12 +1,19 @@
-import { Address, BigInt } from "@graphprotocol/graph-ts";
+import { Address, BigInt, Bytes } from "@graphprotocol/graph-ts";
 import { Oracle as OracleContract } from "../../generated/OracleFactory/Oracle";
 
 import { Oracle } from "../../generated/schema";
-import { FACTORY_ADDRESS } from "../helpers";
+import { convertAddressBytesToAddress, FACTORY_ADDRESS } from "../helpers";
 
 export function getOracleCollateralToken(oracleAddress: Address): Address {
-	const address: Address = loadOracle(oracleAddress).collateralToken;
-	return address;
+	return convertAddressBytesToAddress(
+		loadOracle(oracleAddress).collateralToken
+	);
+	// const d = Address.fromHexString(s);
+	// return Address.
+
+	// const d = Address.fromString(
+	// 	loadOracle(oracleAddress).collateralToken.toString()
+	// );
 }
 
 export function loadOracle(oracleAddress: Address): Oracle {
