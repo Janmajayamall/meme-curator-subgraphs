@@ -3,6 +3,9 @@ import { StakePosition } from "../../generated/schema";
 import { Oracle as OracleContract } from "../../generated/OracleFactory/Oracle";
 import { convertBigIntToDecimal } from "../helpers";
 
+/**
+ * Update functions
+ */
 export function loadStakePosition(
 	userAddress: Address,
 	marketIdentifier: Bytes

@@ -88,8 +88,10 @@ type TradeHistory @entity {
 	market: Market!
 	amount0: BigDecimal!
 	amount1: BigDecimal!
-	amountC: BigDecimal! # +ve value -> buy; -ve value -> sell
+	amountC: BigDecimal!
+	buy: Boolean!
 	timestamp: BigInt!
+	tradeIndex: BigInt!
 }
 
 type StakeHistory @entity {
@@ -99,6 +101,7 @@ type StakeHistory @entity {
 	amountC: BigDecimal!
 	outcomeStaked: BigInt!
 	timestamp: BigInt!
+	stakeIndex: BigInt!
 }
 
 type TradePosition @entity {
@@ -131,7 +134,7 @@ type Oracle @entity {
 	delegate: Bytes!
 	manager: Bytes!
 	collateralToken: Bytes!
-	isActive: Boolean
+	isActive: Boolean!
 	feeNumerator: BigInt!
 	feeDenominator: BigInt!
 	donEscalationLimit: BigInt!
@@ -139,16 +142,7 @@ type Oracle @entity {
 	donBufferBlocks: BigInt!
 	resolutionBufferBlocks: BigInt!
 
-	tokenCReserve: [OracleTokenCReserve!]! @derivedFrom(field: "oracle")
-
 	markets: [Market!]! @derivedFrom(field: "oracle")
 
 	factory: OracleFactory!
-}
-
-type OracleTokenCReserve @entity {
-	id: ID! # {oracleAddress}-{tokenCAddress}
-	oracle: Oracle!
-	tokenC: Bytes!
-	reserve: BigDecimal!
 }

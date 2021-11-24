@@ -1,11 +1,15 @@
 import { Address, Bytes, BigInt, BigDecimal } from "@graphprotocol/graph-ts";
 import { StakeHistory } from "../../generated/schema";
+import { convertBigIntToDecimal } from "../helpers";
 
+/**
+ * Update functions
+ */
 export function updateStakeHistory(
 	userAddress: Address,
 	marketIdentifier: Bytes,
 	stakeIndex: BigInt,
-	amountC: BigDecimal,
+	amountC: BigInt,
 	outcomeStaked: BigInt,
 	timestamp: BigInt
 ): void {
@@ -21,8 +25,9 @@ export function updateStakeHistory(
 	}
 	stakeHistory.user = userAddress.toHex();
 	stakeHistory.market = marketIdentifier.toHex();
-	stakeHistory.amountC = amountC;
+	stakeHistory.amountC = convertBigIntToDecimal(amountC);
 	stakeHistory.outcomeStaked = outcomeStaked;
 	stakeHistory.timestamp = timestamp;
+	stakeHistory.stakeIndex = stakeIndex;
 	stakeHistory.save();
 }

@@ -3,6 +3,9 @@ import { TradePosition } from "../../generated/schema";
 import { Oracle as OracleContract } from "../../generated/OracleFactory/Oracle";
 import { convertBigIntToDecimal } from "../helpers";
 
+/**
+ * Update functions
+ */
 export function loadTradePosition(
 	userAddress: Address,
 	marketIdentifier: Bytes

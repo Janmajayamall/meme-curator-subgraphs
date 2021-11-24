@@ -1,6 +1,9 @@
 import { Address, Bytes, BigInt } from "@graphprotocol/graph-ts";
 import { UserMarket } from "../../generated/schema";
 
+/**
+ * Update functions
+ */
 export function loadUserMarket(
 	userAddress: Address,
 	marketIdentifier: Bytes

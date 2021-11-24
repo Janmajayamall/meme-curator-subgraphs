@@ -8,6 +8,9 @@ import {
 } from "../helpers";
 import { Oracle as OracleContract } from "../../generated/OracleFactory/Oracle";
 
+/**
+ * Get functions querying by contract call
+ */
 export function getStakingFromOracleContract(
 	marketIdentifier: Bytes,
 	oracleAddress: Address
@@ -38,6 +41,10 @@ export function getOutcomeTokenReservesFromOracleContract(
 	return res;
 }
 
+/**
+ * Get functions querying entity
+ */
+
 export function getOutcomeTokenReserves(
 	marketIdentifier: Bytes
 ): OutcomeTokenReserves {
@@ -61,6 +68,9 @@ export function getDonEscalationCount(marketIdentifier: Bytes): BigInt {
 	return loadMarket(marketIdentifier).donEscalationCount;
 }
 
+/**
+ * Update functions
+ */
 export function loadMarket(marketIdentifier: Bytes): Market {
 	var market = Market.load(marketIdentifier.toHex());
 	if (!market) {
@@ -190,11 +200,13 @@ export function updateStaking(
 
 export function updateTradeVolume(
 	marketIdentifier: Bytes,
-	amountC: BigDecimal,
+	amountC: BigInt,
 	timestamp: BigInt
 ): void {
 	const market = loadMarket(marketIdentifier);
-	market.tradeVolume = market.tradeVolume.plus(amountC);
+	market.tradeVolume = market.tradeVolume.plus(
+		convertBigIntToDecimal(amountC)
+	);
 	market.totalVolume = market.tradeVolume.plus(market.stakeVolume);
 	market.lastActionTimestamp = timestamp;
 	market.save();

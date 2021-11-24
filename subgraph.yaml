@@ -6,9 +6,9 @@ dataSources:
       name: OracleFactory
       network: arbitrum-rinkeby
       source:
-          address: "0xE8606614bA1798286F069E46d7a36EE434D478E7"
+          address: "0xB79c53EEda9ACE98A74E9b91c8AF775c1D1969c0"
           abi: OracleFactory
-          startBlock: 6987509
+          startBlock: 6996042
       mapping:
           kind: ethereum/events
           apiVersion: 0.0.5
@@ -42,17 +42,19 @@ templates:
               - name: Oracle
                 file: ./abis/Oracle.json
           eventHandlers:
-              - event: MarketCreated(indexed address,indexed bytes32,indexed bytes32)
+              - event: MarketCreated(indexed bytes32,address,bytes32,uint256)
                 handler: handleMarketCreated
-              - event: OutcomeTraded(indexed bytes32,indexed address)
-                handler: handleOutcomeTraded
-              - event: OutcomeStaked(indexed bytes32,indexed address)
+              - event: OutcomeBought(indexed bytes32,address,uint256,uint256,uint256)
+                handler: handleOutcomeBought
+              - event: OutcomeSold(indexed bytes32,address,uint256,uint256,uint256)
+                handler: handleOutcomeSold
+              - event: OutcomeStaked(indexed bytes32,address,uint256,uint8)
                 handler: handleOutcomeStaked
               - event: OutcomeSet(indexed bytes32)
                 handler: handleOutcomeSet
-              - event: WinningRedeemed(indexed bytes32,indexed address)
+              - event: WinningRedeemed(indexed bytes32,address)
                 handler: handleWinningRedeemed
-              - event: StakedRedeemed(indexed bytes32,indexed address)
+              - event: StakedRedeemed(indexed bytes32,address)
                 handler: handleStakedRedeemed
               - event: OracleConfigUpdated()
                 handler: handleOracleConfigUpdated

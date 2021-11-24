@@ -1,7 +1,13 @@
-import { BigInt, BigDecimal, Address, Bytes } from "@graphprotocol/graph-ts";
+import {
+	BigInt,
+	BigDecimal,
+	Address,
+	Bytes,
+	log,
+} from "@graphprotocol/graph-ts";
 
 export const ADDRESS_ZERO = "0x0000000000000000000000000000000000000000";
-export const FACTORY_ADDRESS = "0xE8606614bA1798286F069E46d7a36EE434D478E7";
+export const FACTORY_ADDRESS = "0xB79c53EEda9ACE98A74E9b91c8AF775c1D1969c0";
 export let ZERO_BI = BigInt.fromI32(0);
 export let ONE_BI = BigInt.fromI32(1);
 export let ZERO_BD = BigDecimal.fromString("0");
@@ -15,18 +21,9 @@ export function convertBigIntToDecimal(
 	return value.divDecimal(base);
 }
 
-/**
- * @ref https://github.com/protofire/subgraph-toolkit/blob/main/lib/utils.ts
- */
 export function convertAddressBytesToAddress(address: Bytes): Address {
-	return Address.fromHexString(address.toHexString()).subarray(
-		-20
-	) as Address;
+	return changetype<Address>(address);
 }
-
-// export interface Staking {
-
-// }
 
 export class Staking {
 	lastAmountStaked: BigDecimal;

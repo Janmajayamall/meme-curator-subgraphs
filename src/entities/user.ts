@@ -1,6 +1,9 @@
 import { Address } from "@graphprotocol/graph-ts";
 import { User } from "../../generated/schema";
 
+/**
+ * Update functions
+ */
 export function loadUser(userAddress: Address): User {
 	const id = userAddress.toHex();
 	var user = User.load(id);
