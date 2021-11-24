@@ -35,14 +35,14 @@
         "type": "bool"
       },
       {
-        "internalType": "uint8",
+        "internalType": "uint32",
         "name": "_feeNumerator",
-        "type": "uint8"
+        "type": "uint32"
       },
       {
-        "internalType": "uint8",
+        "internalType": "uint32",
         "name": "_feeDenominator",
-        "type": "uint8"
+        "type": "uint32"
       },
       {
         "internalType": "uint16",

@@ -92,31 +92,6 @@
         "internalType": "bytes32",
         "name": "marketIdentifier",
         "type": "bytes32"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "by",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "OutcomeBought",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "marketIdentifier",
-        "type": "bytes32"
       }
     ],
     "name": "OutcomeSet",
@@ -136,15 +111,9 @@
         "internalType": "address",
         "name": "by",
         "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
       }
     ],
-    "name": "OutcomeSold",
+    "name": "OutcomeStaked",
     "type": "event"
   },
   {
@@ -163,7 +132,7 @@
         "type": "address"
       }
     ],
-    "name": "OutcomeStaked",
+    "name": "OutcomeTraded",
     "type": "event"
   },
   {

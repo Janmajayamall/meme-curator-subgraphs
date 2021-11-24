@@ -3,6 +3,22 @@ import { OracleTokenCReserve } from "../../generated/schema";
 import { Oracle as OracleContract } from "../../generated/OracleFactory/Oracle";
 import { convertBigIntToDecimal, ZERO_BD } from "../helpers";
 
+export function getTokenCReserveFromOracleContract(
+	oracleAddress: Address,
+	tokenCAddress: Address
+): BigDecimal {
+	return convertBigIntToDecimal(
+		OracleContract.bind(oracleAddress).cReserves(tokenCAddress)
+	);
+}
+
+export function getTokenCReserve(
+	oracleAddress: Address,
+	tokenCAddress: Address
+): BigDecimal {
+	return loadOracleTokenCReserve(oracleAddress, tokenCAddress).reserve;
+}
+
 export function getDeltaTokenCReserveForOracle(
 	oracleAddress: Address,
 	tokenCAddress: Address
@@ -28,13 +44,13 @@ export function loadOracleTokenCReserve(
 	tokenCAddress: Address
 ): OracleTokenCReserve {
 	const id = oracleAddress.toHex() + "-" + tokenCAddress.toHex();
-	var oracleTokenCBalance = OracleTokenCReserve.load(id);
-	if (!oracleTokenCBalance) {
-		oracleTokenCBalance = new OracleTokenCReserve(id);
-		oracleTokenCBalance.oracle = oracleAddress.toHex();
-		oracleTokenCBalance.tokenC = tokenCAddress;
+	var oracleTokenCReserve = OracleTokenCReserve.load(id);
+	if (!oracleTokenCReserve) {
+		oracleTokenCReserve = new OracleTokenCReserve(id);
+		oracleTokenCReserve.oracle = oracleAddress.toHex();
+		oracleTokenCReserve.tokenC = tokenCAddress;
 	}
-	return oracleTokenCBalance;
+	return oracleTokenCReserve;
 }
 
 export function updateOracleTokenCReserve(

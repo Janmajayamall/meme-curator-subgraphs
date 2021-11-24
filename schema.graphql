@@ -69,6 +69,7 @@ type Market @entity {
 	stakeVolume: BigDecimal!
 	totalVolume: BigDecimal!
 	lastActionTimestamp: BigInt!
+	tradesCount: BigInt!
 }
 
 type User @entity {
@@ -82,17 +83,17 @@ type User @entity {
 }
 
 type TradeHistory @entity {
-	id: ID! # {user}-{market}
+	id: ID! # {user}-{market}-{tradeIndex}
 	user: User!
 	market: Market!
 	amount0: BigDecimal!
 	amount1: BigDecimal!
-	amountC: BigDecimal!
+	amountC: BigDecimal! # +ve value -> buy; -ve value -> sell
 	timestamp: BigInt!
 }
 
 type StakeHistory @entity {
-	id: ID! # {user}-{market}
+	id: ID! # {user}-{market}-{stakeIndex}
 	user: User!
 	market: Market!
 	amountC: BigDecimal!
@@ -113,8 +114,8 @@ type StakePosition @entity {
 	id: ID! # {user}-{market}
 	user: User!
 	market: Market!
-	amountC0: BigDecimal!
-	amountC1: BigDecimal!
+	amountStaked0: BigDecimal!
+	amountStaked1: BigDecimal!
 	timestamp: BigInt!
 }
 

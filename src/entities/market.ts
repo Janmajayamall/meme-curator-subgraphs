@@ -3,8 +3,24 @@ import { Market } from "../../generated/schema";
 import { convertBigIntToDecimal } from "../helpers";
 import { Oracle as OracleContract } from "../../generated/OracleFactory/Oracle";
 
-export function getTokenCAddress(marketIdentifier: Bytes): Address {
-	return loadMarket(marketIdentifier).tokenC;
+export function getStakingFromOracleContract(
+	marketIdentifier: Bytes,
+	oracleAddress: Address
+): {
+	lastAmountStaked: BigDecimal;
+	staker0: Address;
+	staker1: Address;
+	lastOutcomeStaked: BigInt;
+} {
+	const staking = OracleContract.bind(oracleAddress).staking(
+		marketIdentifier
+	);
+	return {
+		lastAmountStaked: convertBigIntToDecimal(staking.value0),
+		staker0: staking.value1,
+		staker1: staking.value2,
+		lastOutcomeStaked: staking.value3,
+	};
 }
 
 export function getOutcomeTokenReservesFromOracleContract(
@@ -27,23 +43,16 @@ export function getOutcomeTokenReserves(
 	return [market.outcomeReserve0, market.outcomeReserve1];
 }
 
-export function getDeltaOutcomeTokenReserves(
-	marketIdentifier: Bytes,
-	oracleAddress: Address
-): [BigDecimal, BigDecimal] {
-	const latestOutcomeTokenReserves = OracleContract.bind(
-		oracleAddress
-	).outcomeReserves(marketIdentifier);
-	const market = loadMarket(marketIdentifier);
-	const deltas: [BigDecimal, BigDecimal] = [
-		convertBigIntToDecimal(latestOutcomeTokenReserves.value0).minus(
-			market.outcomeReserve0
-		),
-		convertBigIntToDecimal(latestOutcomeTokenReserves.value1).minus(
-			market.outcomeReserve1
-		),
-	];
-	return deltas;
+export function getTokenCAddress(marketIdentifier: Bytes): Address {
+	return loadMarket(marketIdentifier).tokenC;
+}
+
+export function getTradesCount(marketIdentifier: Bytes): BigInt {
+	return loadMarket(marketIdentifier).tradesCount;
+}
+
+export function getDonEscalationCount(marketIdentifier: Bytes): BigInt {
+	return loadMarket(marketIdentifier).donEscalationCount;
 }
 
 export function loadMarket(marketIdentifier: Bytes): Market {
@@ -175,13 +184,11 @@ export function updateStaking(
 
 export function updateTradeVolume(
 	marketIdentifier: Bytes,
-	increaserBy: BigInt,
+	amountC: BigDecimal,
 	timestamp: BigInt
 ): void {
 	const market = loadMarket(marketIdentifier);
-	market.tradeVolume = market.tradeVolume.plus(
-		convertBigIntToDecimal(increaserBy)
-	);
+	market.tradeVolume = market.tradeVolume.plus(amountC);
 	market.totalVolume = market.tradeVolume.plus(market.stakeVolume);
 	market.lastActionTimestamp = timestamp;
 	market.save();
@@ -203,5 +210,11 @@ export function updateStakeVolume(
 	market.lastActionTimestamp = timestamp;
 	market.totalVolume = market.stakeVolume.plus(market.tradeVolume);
 
+	market.save();
+}
+
+export function increaseTradesCount(marketIdentifier: Bytes, by: BigInt): void {
+	const market = loadMarket(marketIdentifier);
+	market.tradesCount = market.tradesCount.plus(by);
 	market.save();
 }
