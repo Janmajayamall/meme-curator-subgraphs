@@ -301,7 +301,7 @@ export function handleTransferSingle(event: TransferSingle): void {
 }
 
 export function handleTransferBatch(event: TransferBatch): void {
-	for (let i; i < event.params._ids.length; i++) {
+	for (let i = 0; i < event.params._ids.length; i++) {
 		let tokenId = event.params._ids[i];
 		updateTokenBalance(tokenId, event.params._from, event.address);
 		updateTokenBalance(tokenId, event.params._to, event.address);

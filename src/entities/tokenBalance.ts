@@ -1,7 +1,7 @@
 import { Address, Bytes, BigInt, BigDecimal } from "@graphprotocol/graph-ts";
 import { Oracle as OracleContract } from "../../generated/OracleFactory/Oracle";
 import { TokenBalance } from "../../generated/schema";
-import { convertBigIntToDecimal } from "../helpers";
+import { convertBigIntToDecimal, emptyBytes } from "../helpers";
 
 export function loadTokenBalance(tokenId: BigInt, user: Address): TokenBalance {
 	const id = user.toHex() + "-" + tokenId.toHex();
@@ -21,13 +21,17 @@ export function updateTokenBalance(
 	tokenId: BigInt,
 	user: Address,
 	oracleAddress: Address,
-	marketIdentifier?: Bytes
+	marketIdentifier: Bytes = emptyBytes
 ): void {
 	const tokenBalance = loadTokenBalance(tokenId, user);
-	const balance = OracleContract.bind(oracleAddress).balanceOf(user, tokenId);
-	tokenBalance.balance = convertBigIntToDecimal(balance);
+	const callRes = OracleContract.bind(oracleAddress).try_balanceOf(
+		user,
+		tokenId
+	);
+	let value = callRes.reverted ? BigInt.zero() : callRes.value;
+	tokenBalance.balance = convertBigIntToDecimal(value);
 	tokenBalance.oracle = oracleAddress.toHex();
-	if (marketIdentifier) {
+	if (!marketIdentifier.equals(emptyBytes)) {
 		tokenBalance.market = marketIdentifier.toHex();
 	}
 	tokenBalance.save();
