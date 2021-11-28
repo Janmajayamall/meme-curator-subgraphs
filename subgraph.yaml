@@ -6,9 +6,9 @@ dataSources:
       name: OracleFactory
       network: arbitrum-rinkeby
       source:
-          address: "0xB79c53EEda9ACE98A74E9b91c8AF775c1D1969c0"
+          address: "0x358cB6064C333E9c71975022170Af99D6fD0b210"
           abi: OracleFactory
-          startBlock: 6996042
+          startBlock: 7087554
       mapping:
           kind: ethereum/events
           apiVersion: 0.0.5
@@ -64,3 +64,5 @@ templates:
                 handler: handleTransferSingle
               - event: TransferBatch(indexed address,indexed address,indexed address,uint256[],uint256[])
                 handler: handleTransferBatch
+              - event: ApprovalForAll(indexed address,indexed address,bool)
+                handler: handleApprovalForAll

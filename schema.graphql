@@ -119,6 +119,14 @@ type TokenBalance @entity {
 	balance: BigDecimal!
 }
 
+type TokenApproval @entity {
+	id: ID! # {user}-{operator}-{oracle}
+	user: User!
+	oracle: Oracle!
+	operator: Bytes!
+	approved: Boolean!
+}
+
 type TradePosition @entity {
 	id: ID! # {user}-{market}
 	user: User!

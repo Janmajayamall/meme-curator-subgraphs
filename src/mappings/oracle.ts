@@ -6,6 +6,7 @@ import {
 	log,
 } from "@graphprotocol/graph-ts";
 import {
+	ApprovalForAll,
 	DelegateChanged,
 	MarketCreated,
 	OracleConfigUpdated,
@@ -41,6 +42,7 @@ import {
 } from "../entities/oracle";
 import { updateStakeHistory } from "../entities/stakeHistory";
 import { updateStakePosition } from "../entities/stakePosition";
+import { updateTokenApproval } from "../entities/tokenApproval";
 import { updateTokenBalance } from "../entities/tokenBalance";
 import { updateTradeHistory } from "../entities/tradeHistory";
 import { updateTradePosition } from "../entities/tradePosition";
@@ -306,4 +308,13 @@ export function handleTransferBatch(event: TransferBatch): void {
 		updateTokenBalance(tokenId, event.params._from, event.address);
 		updateTokenBalance(tokenId, event.params._to, event.address);
 	}
+}
+
+export function handleApprovalForAll(event: ApprovalForAll): void {
+	updateTokenApproval(
+		event.params._owner,
+		event.params._operator,
+		event.address,
+		event.params._approved
+	);
 }
