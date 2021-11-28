@@ -58,7 +58,10 @@ type Market @entity {
 	tradeHistory: [TradeHistory!]! @derivedFrom(field: "market")
 	stakeHistory: [StakeHistory!]! @derivedFrom(field: "market")
 
-	# positions
+	# token balances
+	tokenBalances: [TokenBalance!]! @derivedFrom(field: "market")
+
+	# positions //TODO this isn't needed anymore
 	tradePositions: [TradePosition!]! @derivedFrom(field: "market")
 	stakePositions: [StakePosition!]! @derivedFrom(field: "market")
 
@@ -77,6 +80,9 @@ type User @entity {
 
 	tradeHistory: [TradeHistory!]! @derivedFrom(field: "user")
 	stakeHistory: [StakeHistory!]! @derivedFrom(field: "user")
+
+	tokenBalances: [TokenBalance!]! @derivedFrom(field: "user")
+
 	tradePositions: [TradePosition!]! @derivedFrom(field: "user")
 	stakePositions: [StakePosition!]! @derivedFrom(field: "user")
 	markets: [UserMarket!]! @derivedFrom(field: "user")
@@ -102,6 +108,15 @@ type StakeHistory @entity {
 	outcomeStaked: BigInt!
 	timestamp: BigInt!
 	stakeIndex: BigInt!
+}
+
+type TokenBalance @entity {
+	id: ID! # {user}-{tokenId}
+	user: User!
+	oracle: Oracle!
+	market: Market!
+	tokenId: BigInt!
+	balance: BigDecimal!
 }
 
 type TradePosition @entity {
@@ -143,6 +158,8 @@ type Oracle @entity {
 	resolutionBufferBlocks: BigInt!
 
 	markets: [Market!]! @derivedFrom(field: "oracle")
+
+	tokenBalances: [TokenBalance!]! @derivedFrom(field: "oracle")
 
 	factory: OracleFactory!
 }

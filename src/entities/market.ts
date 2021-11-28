@@ -68,6 +68,22 @@ export function getDonEscalationCount(marketIdentifier: Bytes): BigInt {
 	return loadMarket(marketIdentifier).donEscalationCount;
 }
 
+export function getOutcomeToken0Id(marketIdentifier: Bytes): BigInt {
+	return loadMarket(marketIdentifier).oToken0Id;
+}
+
+export function getOutcomeToken1Id(marketIdentifier: Bytes): BigInt {
+	return loadMarket(marketIdentifier).oToken1Id;
+}
+
+export function getStakeToken0Id(marketIdentifier: Bytes): BigInt {
+	return loadMarket(marketIdentifier).sToken0Id;
+}
+
+export function getStakeToken1Id(marketIdentifier: Bytes): BigInt {
+	return loadMarket(marketIdentifier).sToken1Id;
+}
+
 /**
  * Update functions
  */

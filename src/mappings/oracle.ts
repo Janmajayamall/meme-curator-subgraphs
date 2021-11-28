@@ -14,6 +14,8 @@ import {
 	OutcomeSold,
 	OutcomeStaked,
 	StakedRedeemed,
+	TransferBatch,
+	TransferSingle,
 	WinningRedeemed,
 } from "../../generated/OracleFactory/Oracle";
 import { saveUser, saveUserMarket } from "../entities";
@@ -28,6 +30,10 @@ import {
 	increaseTradesCount,
 	getTradesCount,
 	getDonEscalationCount,
+	getOutcomeToken0Id,
+	getOutcomeToken1Id,
+	getStakeToken0Id,
+	getStakeToken1Id,
 } from "../entities/market";
 import {
 	updateOracleDetails,
@@ -35,6 +41,7 @@ import {
 } from "../entities/oracle";
 import { updateStakeHistory } from "../entities/stakeHistory";
 import { updateStakePosition } from "../entities/stakePosition";
+import { updateTokenBalance } from "../entities/tokenBalance";
 import { updateTradeHistory } from "../entities/tradeHistory";
 import { updateTradePosition } from "../entities/tradePosition";
 import { ONE_BD, ONE_BI, Staking, ZERO_BD, TradeAmount } from "../helpers";
@@ -85,12 +92,20 @@ export function handleOutcomeBought(event: OutcomeBought): void {
 		true
 	);
 
-	// update trade positions
-	updateTradePosition(
+	// update outcome token balances
+	const oToken0Id = getOutcomeToken0Id(event.params.marketIdentifier);
+	const oToken1Id = getOutcomeToken1Id(event.params.marketIdentifier);
+	updateTokenBalance(
+		oToken0Id,
 		event.params.by,
-		event.params.marketIdentifier,
 		event.address,
-		event.block.timestamp
+		event.params.marketIdentifier
+	);
+	updateTokenBalance(
+		oToken1Id,
+		event.params.by,
+		event.address,
+		event.params.marketIdentifier
 	);
 
 	// update market
@@ -128,12 +143,20 @@ export function handleOutcomeSold(event: OutcomeSold): void {
 		false
 	);
 
-	// update trade positions
-	updateTradePosition(
+	// update outcome token balances
+	const oToken0Id = getOutcomeToken0Id(event.params.marketIdentifier);
+	const oToken1Id = getOutcomeToken1Id(event.params.marketIdentifier);
+	updateTokenBalance(
+		oToken0Id,
 		event.params.by,
-		event.params.marketIdentifier,
 		event.address,
-		event.block.timestamp
+		event.params.marketIdentifier
+	);
+	updateTokenBalance(
+		oToken1Id,
+		event.params.by,
+		event.address,
+		event.params.marketIdentifier
 	);
 
 	// update market
@@ -169,12 +192,20 @@ export function handleOutcomeStaked(event: OutcomeStaked): void {
 		event.block.timestamp
 	);
 
-	// update stake position
-	updateStakePosition(
+	// update stake token balances
+	const sToken0Id = getStakeToken0Id(event.params.marketIdentifier);
+	const sToken1Id = getStakeToken1Id(event.params.marketIdentifier);
+	updateTokenBalance(
+		sToken0Id,
 		event.params.by,
-		event.params.marketIdentifier,
 		event.address,
-		event.block.timestamp
+		event.params.marketIdentifier
+	);
+	updateTokenBalance(
+		sToken1Id,
+		event.params.by,
+		event.address,
+		event.params.marketIdentifier
 	);
 
 	// update market
@@ -193,28 +224,64 @@ export function handleOutcomeSet(event: OutcomeSet): void {
 }
 
 export function handleWinningRedeemed(event: WinningRedeemed): void {
-	updateOutcomeReserves(event.params.marketIdentifier, event.address);
-	updateStateDetails(event.params.marketIdentifier, event.address);
-
+	// update user interaction
 	saveUser(event.params.by);
 	saveUserMarket(
 		event.params.by,
 		event.params.marketIdentifier,
 		event.block.timestamp
 	);
+
+	// update outcome token balances
+	const oToken0Id = getOutcomeToken0Id(event.params.marketIdentifier);
+	const oToken1Id = getOutcomeToken1Id(event.params.marketIdentifier);
+	updateTokenBalance(
+		oToken0Id,
+		event.params.by,
+		event.address,
+		event.params.marketIdentifier
+	);
+	updateTokenBalance(
+		oToken1Id,
+		event.params.by,
+		event.address,
+		event.params.marketIdentifier
+	);
+
+	// update market
+	updateOutcomeReserves(event.params.marketIdentifier, event.address);
+	updateStateDetails(event.params.marketIdentifier, event.address);
 }
 
 export function handleStakedRedeemed(event: StakedRedeemed): void {
-	updateStakingReserves(event.params.marketIdentifier, event.address);
-	updateStaking(event.params.marketIdentifier, event.address);
-	updateStateDetails(event.params.marketIdentifier, event.address);
-
+	// update user interaction
 	saveUser(event.params.by);
 	saveUserMarket(
 		event.params.by,
 		event.params.marketIdentifier,
 		event.block.timestamp
 	);
+
+	// update stake token balances
+	const sToken0Id = getStakeToken0Id(event.params.marketIdentifier);
+	const sToken1Id = getStakeToken1Id(event.params.marketIdentifier);
+	updateTokenBalance(
+		sToken0Id,
+		event.params.by,
+		event.address,
+		event.params.marketIdentifier
+	);
+	updateTokenBalance(
+		sToken1Id,
+		event.params.by,
+		event.address,
+		event.params.marketIdentifier
+	);
+
+	// update market
+	updateStakingReserves(event.params.marketIdentifier, event.address);
+	updateStaking(event.params.marketIdentifier, event.address);
+	updateStateDetails(event.params.marketIdentifier, event.address);
 }
 
 export function handleOracleConfigUpdated(event: OracleConfigUpdated): void {
@@ -223,4 +290,20 @@ export function handleOracleConfigUpdated(event: OracleConfigUpdated): void {
 
 export function handleDelegateChanged(event: DelegateChanged): void {
 	updateOracleDetails(event.address);
+}
+
+/**
+ * ERC1155 event handlers
+ */
+export function handleTransferSingle(event: TransferSingle): void {
+	updateTokenBalance(event.params._id, event.params._from, event.address);
+	updateTokenBalance(event.params._id, event.params._to, event.address);
+}
+
+export function handleTransferBatch(event: TransferBatch): void {
+	for (let i; i < event.params._ids.length; i++) {
+		let tokenId = event.params._ids[i];
+		updateTokenBalance(tokenId, event.params._from, event.address);
+		updateTokenBalance(tokenId, event.params._to, event.address);
+	}
 }
