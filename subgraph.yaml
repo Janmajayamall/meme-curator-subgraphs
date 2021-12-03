@@ -66,3 +66,5 @@ templates:
                 handler: handleTransferBatch
               - event: ApprovalForAll(indexed address,indexed address,bool)
                 handler: handleApprovalForAll
+              - event: OutcomeReservesClaimed(indexed bytes32)
+                handler: handleOutcomeReservesClaimed

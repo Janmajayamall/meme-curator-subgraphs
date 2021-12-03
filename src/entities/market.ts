@@ -5,6 +5,10 @@ import {
 	convertBigIntToDecimal,
 	Staking,
 	OutcomeTokenReserves,
+	FOUR_BI,
+	ONE_BI,
+	ZERO_BI,
+	TWO_BI,
 } from "../helpers";
 import { Oracle as OracleContract } from "../../generated/OracleFactory/Oracle";
 
@@ -82,6 +86,10 @@ export function getStakeToken0Id(marketIdentifier: Bytes): BigInt {
 
 export function getStakeToken1Id(marketIdentifier: Bytes): BigInt {
 	return loadMarket(marketIdentifier).sToken1Id;
+}
+
+export function getCreator(marketIdentifier: Bytes): Address {
+	return convertAddressBytesToAddress(loadMarket(marketIdentifier).creator);
 }
 
 /**
@@ -171,13 +179,36 @@ export function updateOutcomeReserves(
 
 	market.outcomeReserve0 = convertBigIntToDecimal(reserves.value0);
 	market.outcomeReserve1 = convertBigIntToDecimal(reserves.value1);
-	// calculate probability for both outcomes
-	const denom: BigDecimal = convertBigIntToDecimal(reserves.value0).plus(
-		convertBigIntToDecimal(reserves.value1)
-	);
-	market.probability1 = convertBigIntToDecimal(reserves.value0).div(denom);
-	market.probability0 = convertBigIntToDecimal(reserves.value1).div(denom);
-	// update trade volume
+
+	if (market.stage.equals(FOUR_BI)) {
+		if (market.outcome.equals(TWO_BI)) {
+			// market closed & outcome declared
+			market.probability1 = BigDecimal.fromString("0.5");
+			market.probability0 = BigDecimal.fromString("0.5");
+		} else {
+			// market closed & outcome declared
+			market.probability1 = (market.outcome.equals(ONE_BI)
+				? ONE_BI
+				: ZERO_BI
+			).toBigDecimal();
+			market.probability0 = (market.outcome.equals(ZERO_BI)
+				? ONE_BI
+				: ZERO_BI
+			).toBigDecimal();
+		}
+	} else {
+		// calculate probability for both outcomes
+		const denom: BigDecimal = convertBigIntToDecimal(reserves.value0).plus(
+			convertBigIntToDecimal(reserves.value1)
+		);
+
+		market.probability0 = convertBigIntToDecimal(reserves.value1).div(
+			denom
+		);
+		market.probability1 = convertBigIntToDecimal(reserves.value0).div(
+			denom
+		);
+	}
 
 	market.save();
 }

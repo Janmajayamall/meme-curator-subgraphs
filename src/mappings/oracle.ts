@@ -11,6 +11,7 @@ import {
 	MarketCreated,
 	OracleConfigUpdated,
 	OutcomeBought,
+	OutcomeReservesClaimed,
 	OutcomeSet,
 	OutcomeSold,
 	OutcomeStaked,
@@ -35,6 +36,7 @@ import {
 	getOutcomeToken1Id,
 	getStakeToken0Id,
 	getStakeToken1Id,
+	getCreator,
 } from "../entities/market";
 import {
 	updateOracleDetails,
@@ -284,6 +286,14 @@ export function handleStakedRedeemed(event: StakedRedeemed): void {
 	updateStakingReserves(event.params.marketIdentifier, event.address);
 	updateStaking(event.params.marketIdentifier, event.address);
 	updateStateDetails(event.params.marketIdentifier, event.address);
+}
+
+export function handleOutcomeReservesClaimed(
+	event: OutcomeReservesClaimed
+): void {
+	// update market
+	updateStateDetails(event.params.marketIdentifier, event.address);
+	updateOutcomeReserves(event.params.marketIdentifier, event.address);
 }
 
 export function handleOracleConfigUpdated(event: OracleConfigUpdated): void {
