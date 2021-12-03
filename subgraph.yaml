@@ -6,9 +6,9 @@ dataSources:
       name: OracleFactory
       network: arbitrum-rinkeby
       source:
-          address: "0x358cB6064C333E9c71975022170Af99D6fD0b210"
+          address: "0xd3831c6B11aCC11852B150c0d163A665DE07D461"
           abi: OracleFactory
-          startBlock: 7117579
+          startBlock: 7201285
       mapping:
           kind: ethereum/events
           apiVersion: 0.0.5

@@ -100,6 +100,7 @@ export function loadMarket(marketIdentifier: Bytes): Market {
 	if (!market) {
 		market = new Market(marketIdentifier.toHex());
 	}
+
 	return market;
 }
 
