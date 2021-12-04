@@ -225,6 +225,8 @@ export function handleOutcomeStaked(event: OutcomeStaked): void {
 
 export function handleOutcomeSet(event: OutcomeSet): void {
 	updateStateDetails(event.params.marketIdentifier, event.address);
+	updateStakingReserves(event.params.marketIdentifier, event.address);
+	updateOutcomeReserves(event.params.marketIdentifier, event.address);
 }
 
 export function handleWinningRedeemed(event: WinningRedeemed): void {
@@ -252,9 +254,11 @@ export function handleWinningRedeemed(event: WinningRedeemed): void {
 		event.params.marketIdentifier
 	);
 
-	// update market
-	updateOutcomeReserves(event.params.marketIdentifier, event.address);
+	// update market; make sure state details are always updated before
+	// outcome reserves, since probability depends on latest value of
+	// market stage
 	updateStateDetails(event.params.marketIdentifier, event.address);
+	updateOutcomeReserves(event.params.marketIdentifier, event.address);
 }
 
 export function handleStakedRedeemed(event: StakedRedeemed): void {
@@ -283,9 +287,10 @@ export function handleStakedRedeemed(event: StakedRedeemed): void {
 	);
 
 	// update market
+	updateStateDetails(event.params.marketIdentifier, event.address);
 	updateStakingReserves(event.params.marketIdentifier, event.address);
 	updateStaking(event.params.marketIdentifier, event.address);
-	updateStateDetails(event.params.marketIdentifier, event.address);
+	updateOutcomeReserves(event.params.marketIdentifier, event.address);
 }
 
 export function handleOutcomeReservesClaimed(
