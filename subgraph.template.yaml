@@ -4,9 +4,9 @@ schema:
 dataSources:
     - kind: ethereum/contract
       name: OracleFactory
-      network: "arbitrum-rinkeby"
+      network: "{{network}}"
       source:
-          address: "0x856d7c8d6ef7438690b99f05eddca67f35ca139e"
+          address: "{{oracleFactory}}"
           abi: OracleFactory
           startBlock: 7342920
       mapping:
