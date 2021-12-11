@@ -1,7 +1,7 @@
 import { Address, BigInt, Bytes } from "@graphprotocol/graph-ts";
 import { Oracle as OracleContract } from "../../generated/OracleFactory/Oracle";
 import { Oracle } from "../../generated/schema";
-import { convertAddressBytesToAddress, FACTORY_ADDRESS } from "../helpers";
+import { ADDRESS_ZERO, convertAddressBytesToAddress } from "../helpers";
 
 /**
  * Get functions querying entity
@@ -23,7 +23,10 @@ export function loadOracle(oracleAddress: Address): Oracle {
 	return oracle;
 }
 
-export function updateOracleDetails(oracleAddress: Address): void {
+export function updateOracleDetails(
+	oracleAddress: Address,
+	oracleFactoryAddress: Address = Address.fromString(ADDRESS_ZERO)
+): void {
 	const contract = OracleContract.bind(oracleAddress);
 	const config = contract.marketConfig();
 	const collateralToken = contract.collateralToken();
@@ -44,7 +47,9 @@ export function updateOracleDetails(oracleAddress: Address): void {
 	oracleContracts.donEscalationLimit = BigInt.fromI32(config.value5);
 	oracleContracts.isActive = config.value6;
 
-	oracleContracts.factory = FACTORY_ADDRESS;
+	if (!oracleFactoryAddress.equals(Address.fromString(ADDRESS_ZERO))) {
+		oracleContracts.factory = oracleFactoryAddress.toHex();
+	}
 
 	oracleContracts.save();
 }
