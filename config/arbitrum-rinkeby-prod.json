@@ -1,5 +1,5 @@
 {
 	"network": "arbitrum-rinkeby",
-	"oracleFactory": "0x76297b34944AA57d49352d6a095CC06113F5B00D",
-	"marketRouter": "0xb7b3e35e7741A59a2AF01aca9c77d57da66E964c"
+	"oracleFactory": "0xeD3bC90C812d471E2a6769AE89f4aE441AbB7dc2",
+	"marketRouter": "0x5eC9e9cd407a6b0FCD2d3DCFB50F706CfCF8DaF2"
 }
