@@ -12,6 +12,10 @@ export function getOracleCollateralToken(oracleAddress: Address): Address {
 	);
 }
 
+export function getManagerAddress(oracleAddress: Address): Address {
+	return changetype<Address>(loadOracle(oracleAddress).manager);
+}
+
 /**
  * Update functions
  */
@@ -35,7 +39,7 @@ export function updateOracleDetails(
 
 	const oracleContracts = loadOracle(oracleAddress);
 	oracleContracts.delegate = delegate;
-	oracleContracts.manager = manager;
+	oracleContracts.manager = manager.toHex(); // safe contract
 	oracleContracts.collateralToken = collateralToken;
 
 	// configs

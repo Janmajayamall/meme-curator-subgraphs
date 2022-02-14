@@ -155,7 +155,7 @@ type UserMarket @entity {
 type Oracle @entity {
 	id: ID!
 	delegate: Bytes!
-	manager: Bytes!
+	manager: Safe!
 	collateralToken: Bytes!
 	isActive: Boolean!
 	feeNumerator: BigInt!
@@ -170,4 +170,27 @@ type Oracle @entity {
 	tokenBalances: [TokenBalance!]! @derivedFrom(field: "oracle")
 
 	factory: OracleFactory!
+}
+
+type Owner @entity {
+	id: ID! # user address
+	safes: [OwnerSafe!]! @derivedFrom(field: "owner")
+}
+
+type Safe @entity {
+	id: ID! # safe address
+	oracle: Oracle @derivedFrom(field: "manager")
+	owners: [OwnerSafe!]! @derivedFrom(field: "safe")
+	nonce: BigInt!
+	approvedHash: []
+}
+
+type OwnerSafe @entity {
+	id: ID! # {owner}-{safe}
+	owner: Owner!
+	safe: Safe!
+}
+
+type SafeApprovedHashes @entity {
+	safe: Safe!
 }
