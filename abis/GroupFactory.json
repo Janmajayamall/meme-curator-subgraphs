@@ -1,0 +1,126 @@
+[
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "contract GroupProxy",
+				"name": "group",
+				"type": "address"
+			}
+		],
+		"name": "GroupCreated",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{ "internalType": "address", "name": "safe", "type": "address" },
+			{
+				"internalType": "address",
+				"name": "groupSingleton",
+				"type": "address"
+			},
+			{ "internalType": "address", "name": "tokenC", "type": "address" },
+			{
+				"internalType": "bytes",
+				"name": "groupMarketConfig",
+				"type": "bytes"
+			}
+		],
+		"name": "createOracleWithSafe",
+		"outputs": [
+			{
+				"internalType": "contract GroupProxy",
+				"name": "groupProxy",
+				"type": "address"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "safeProxyFactory",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "safeSingleton",
+				"type": "address"
+			},
+			{
+				"internalType": "address[]",
+				"name": "owners",
+				"type": "address[]"
+			},
+			{
+				"internalType": "uint256",
+				"name": "safeThreshold",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "groupSingleton",
+				"type": "address"
+			},
+			{ "internalType": "address", "name": "tokenC", "type": "address" },
+			{
+				"internalType": "bytes",
+				"name": "groupMarketConfig",
+				"type": "bytes"
+			}
+		],
+		"name": "createSafeAndOracle",
+		"outputs": [
+			{
+				"internalType": "contract GroupProxy",
+				"name": "groupProxy",
+				"type": "address"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "safeProxyFactory",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "safeSingleton",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "safeThreshold",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "groupSingleton",
+				"type": "address"
+			},
+			{ "internalType": "address", "name": "tokenC", "type": "address" },
+			{
+				"internalType": "bytes",
+				"name": "groupMarketConfig",
+				"type": "bytes"
+			}
+		],
+		"name": "createSafeAndOracleWithSenderAsOwner",
+		"outputs": [
+			{
+				"internalType": "contract GroupProxy",
+				"name": "groupProxy",
+				"type": "address"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	}
+]

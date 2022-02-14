@@ -20,10 +20,8 @@ export function loadUserMarket(
 
 export function saveUserMarket(
 	userAddress: Address,
-	marketIdentifier: Bytes,
-	timestamp: BigInt
+	marketIdentifier: Bytes
 ): void {
 	const userMarket = loadUserMarket(userAddress, marketIdentifier);
-	userMarket.timestamp = timestamp;
 	userMarket.save();
 }

@@ -1,0 +1,116 @@
+[
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "group",
+				"type": "address"
+			},
+			{
+				"internalType": "bytes32",
+				"name": "marketIdentifier",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "uint8",
+				"name": "_for",
+				"type": "uint8"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amountIn",
+				"type": "uint256"
+			}
+		],
+		"name": "challenge",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"components": [
+					{
+						"internalType": "address",
+						"name": "group",
+						"type": "address"
+					},
+					{
+						"internalType": "bytes32",
+						"name": "marketIdentifier",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amount1",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct GroupMarket.MarketData",
+				"name": "marketData",
+				"type": "tuple"
+			},
+			{
+				"internalType": "bytes",
+				"name": "signature",
+				"type": "bytes"
+			},
+			{
+				"internalType": "uint256",
+				"name": "challengeAmount",
+				"type": "uint256"
+			}
+		],
+		"name": "createAndChallengeMarket",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"components": [
+					{
+						"internalType": "address",
+						"name": "group",
+						"type": "address"
+					},
+					{
+						"internalType": "bytes32",
+						"name": "marketIdentifier",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amount1",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct GroupMarket.MarketData",
+				"name": "marketData",
+				"type": "tuple"
+			},
+			{
+				"internalType": "bytes",
+				"name": "signature",
+				"type": "bytes"
+			},
+			{
+				"internalType": "enum GroupSigning.Scheme",
+				"name": "scheme",
+				"type": "uint8"
+			}
+		],
+		"name": "recoverSigner",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]

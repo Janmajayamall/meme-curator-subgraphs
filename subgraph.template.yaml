@@ -3,68 +3,52 @@ schema:
     file: ./schema.graphql
 dataSources:
     - kind: ethereum/contract
-      name: OracleFactory
+      name: GroupFactory
       network: "{{network}}"
       source:
-          address: "{{oracleFactory}}"
-          abi: OracleFactory
+          address: "{{groupFactory}}"
+          abi: GroupFactory
           startBlock: 8277398
       mapping:
           kind: ethereum/events
           apiVersion: 0.0.5
           language: wasm/assemblyscript
           entities:
-              - OracleFactory
+              - GroupFactory
           abis:
-              - name: OracleFactory
-                file: ./abis/OracleFactory.json
-              - name: Oracle
-                file: ./abis/Oracle.json
+              - name: GroupFactory
+                file: ./abis/GroupFactory.json
+              - name: Group
+                file: ./abis/Group.json
           eventHandlers:
-              - event: OracleCreated(indexed address)
-                handler: handleOracleCreated
-          file: ./src/mappings/oracleFactory.ts
+              - event: GroupCreated(indexed address)
+                handler: handleGroupCreated
+          file: ./src/mappings/groupFactory.ts
 templates:
-    - name: Oracle
+    - name: Group
       kind: ethereum/contract
       network: arbitrum-rinkeby
       source:
-          abi: Oracle
+          abi: Group
       mapping:
           kind: ethereum/events
           apiVersion: 0.0.5
           language: wasm/assemblyscript
-          file: ./src/mappings/oracle.ts
+          file: ./src/mappings/group.ts
           entities:
-              - Oracle
+              - Group
               - Market
           abis:
-              - name: Oracle
-                file: ./abis/Oracle.json
+              - name: Group
+                file: ./abis/Group.json
           eventHandlers:
-              - event: MarketCreated(indexed bytes32,address,bytes32,uint256)
+              - event: MarketCreated(indexed bytes32,address,address)
                 handler: handleMarketCreated
-              - event: OutcomeBought(indexed bytes32,address,uint256,uint256,uint256)
-                handler: handleOutcomeBought
-              - event: OutcomeSold(indexed bytes32,address,uint256,uint256,uint256)
-                handler: handleOutcomeSold
-              - event: OutcomeStaked(indexed bytes32,address,uint256,uint8)
-                handler: handleOutcomeStaked
+              - event: Challenged(indexed bytes32,address,uint256,uint8)
+                handler: handleChallenged
+              - event: Redeemed(indexed bytes32,address)
+                handler: handleRedeemed
               - event: OutcomeSet(indexed bytes32)
                 handler: handleOutcomeSet
-              - event: WinningRedeemed(indexed bytes32,address)
-                handler: handleWinningRedeemed
-              - event: StakedRedeemed(indexed bytes32,address)
-                handler: handleStakedRedeemed
-              - event: OracleConfigUpdated()
-                handler: handleOracleConfigUpdated
-              - event: DelegateChanged(indexed address)
-                handler: handleDelegateChanged
-              - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
-                handler: handleTransferSingle
-              - event: TransferBatch(indexed address,indexed address,indexed address,uint256[],uint256[])
-                handler: handleTransferBatch
-              - event: ApprovalForAll(indexed address,indexed address,bool)
-                handler: handleApprovalForAll
-              - event: OutcomeReservesClaimed(indexed bytes32)
-                handler: handleOutcomeReservesClaimed
+              - event: ConfigUpdated()
+                handler: handleConfigUpdated

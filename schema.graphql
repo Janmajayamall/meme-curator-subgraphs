@@ -1,196 +1,80 @@
-type OracleFactory @entity {
+type GroupFactory @entity {
 	id: ID!
-	oracleCount: BigInt!
-	oracles: [Oracle!]! @derivedFrom(field: "factory")
+	groupCount: BigInt!
+	groups: [Group!]! @derivedFrom(field: "groupFactory")
+}
+
+type Group @entity {
+	id: ID!
+
+	groupFactory: GroupFactory!
+
+	# config
+	fee: BigDecimal!
+	donBuffer: BigInt!
+	resolutionBuffer: BigInt!
+	isActive: Boolean!
+
+	donReservesLimit: BigDecimal!
+	collateralToken: Bytes!
+	manager: Bytes!
+
+	markets: [Market!]! @derivedFrom(field: "group")
 }
 
 type Market @entity {
 	id: ID!
 
-	# basic details
-	oracle: Oracle!
-	creator: Bytes!
-	eventIdentifier: Bytes!
+	group: Group!
 	marketIdentifier: Bytes!
 
-	# market details
-	tokenC: Bytes!
-	feeNumerator: BigInt!
-	feeDenominator: BigInt!
-	# calculated
-	fee: BigDecimal!
+	# reserves
+	reserve0: BigDecimal!
+	reserve1: BigDecimal!
 
-	# token ids
-	oToken0Id: BigInt!
-	oToken1Id: BigInt!
-	sToken0Id: BigInt!
-	sToken1Id: BigInt!
+	# state
+	donBufferEndsAt: BigInt!
+	donBuffer: BigInt!
+	resolutionBufferEndsAt: BigInt!
+	resolutionBuffer: BigInt!
 
-	# state details
-	expireAtBlock: BigInt!
-	donBufferEndsAtBlock: BigInt!
-	resolutionEndsAtBlock: BigInt!
-	donBufferBlocks: BigInt!
-	resolutionBufferBlocks: BigInt!
-	donEscalationCount: BigInt!
-	donEscalationLimit: BigInt!
-	outcome: BigInt!
-	stage: BigInt!
-
-	# outcome reserves
-	outcomeReserve0: BigDecimal!
-	outcomeReserve1: BigDecimal!
-	# calculated
-	probability0: BigDecimal!
-	probability1: BigDecimal!
-
-	# staking reserves
-	stakingReserve0: BigDecimal!
-	stakingReserve1: BigDecimal!
-
-	# staking
+	# staked info
 	staker0: Bytes!
 	staker1: Bytes!
 	lastAmountStaked: BigDecimal!
-	lastOutcomeStaked: BigInt!
 
-	# history
-	tradeHistory: [TradeHistory!]! @derivedFrom(field: "market")
-	stakeHistory: [StakeHistory!]! @derivedFrom(field: "market")
+	# details
+	tokenC: Bytes!
+	fee: BigDecimal!
+	outcome: BigInt!
 
-	# token balances
-	tokenBalances: [TokenBalance!]! @derivedFrom(field: "market")
+	# extras
+	donEscalationCount: BigInt!
 
-	# positions //TODO this isn't needed anymore
-	tradePositions: [TradePosition!]! @derivedFrom(field: "market")
-	stakePositions: [StakePosition!]! @derivedFrom(field: "market")
-
-	# extra info
+	stakes: [UserStake!]! @derivedFrom(field: "market")
 	users: [UserMarket!]! @derivedFrom(field: "market")
-	timestamp: BigInt!
-	tradeVolume: BigDecimal!
-	stakeVolume: BigDecimal!
-	totalVolume: BigDecimal!
-	lastActionTimestamp: BigInt!
-	tradesCount: BigInt!
 }
 
 type User @entity {
 	id: ID!
-
-	tradeHistory: [TradeHistory!]! @derivedFrom(field: "user")
-	stakeHistory: [StakeHistory!]! @derivedFrom(field: "user")
-
-	tokenBalances: [TokenBalance!]! @derivedFrom(field: "user")
-
-	tradePositions: [TradePosition!]! @derivedFrom(field: "user")
-	stakePositions: [StakePosition!]! @derivedFrom(field: "user")
 	markets: [UserMarket!]! @derivedFrom(field: "user")
-}
-
-type TradeHistory @entity {
-	id: ID! # {user}-{market}-{tradeIndex}
-	user: User!
-	market: Market!
-	amount0: BigDecimal!
-	amount1: BigDecimal!
-	amountC: BigDecimal!
-	buy: Boolean!
-	timestamp: BigInt!
-	tradeIndex: BigInt!
-}
-
-type StakeHistory @entity {
-	id: ID! # {user}-{market}-{stakeIndex}
-	user: User!
-	market: Market!
-	amountC: BigDecimal!
-	outcomeStaked: BigInt!
-	timestamp: BigInt!
-	stakeIndex: BigInt!
-}
-
-type TokenBalance @entity {
-	id: ID! # {user}-{tokenId}
-	user: User!
-	oracle: Oracle!
-	market: Market!
-	tokenId: BigInt!
-	balance: BigDecimal!
-}
-
-type TokenApproval @entity {
-	id: ID! # {user}-{operator}-{oracle}
-	user: User!
-	oracle: Oracle!
-	operator: Bytes!
-	approved: Boolean!
-}
-
-type TradePosition @entity {
-	id: ID! # {user}-{market}
-	user: User!
-	market: Market!
-	amount0: BigDecimal!
-	amount1: BigDecimal!
-	timestamp: BigInt!
-}
-
-type StakePosition @entity {
-	id: ID! # {user}-{market}
-	user: User!
-	market: Market!
-	amountStaked0: BigDecimal!
-	amountStaked1: BigDecimal!
-	timestamp: BigInt!
+	stakes: [UserStake!]! @derivedFrom(field: "user")
 }
 
 type UserMarket @entity {
 	id: ID! # {user}-{market}
 	user: User!
 	market: Market!
-	timestamp: BigInt!
 }
 
-type Oracle @entity {
-	id: ID!
-	delegate: Bytes!
-	manager: Safe!
-	collateralToken: Bytes!
-	isActive: Boolean!
-	feeNumerator: BigInt!
-	feeDenominator: BigInt!
-	donEscalationLimit: BigInt!
-	expireBufferBlocks: BigInt!
-	donBufferBlocks: BigInt!
-	resolutionBufferBlocks: BigInt!
+type UserStake @entity {
+	id: ID! # {user}-{marketIdentifier}-{group}-{donEscalationIndex}
+	user: User!
+	market: Market!
+	group: Group!
 
-	markets: [Market!]! @derivedFrom(field: "oracle")
+	donEscalationIndex: BigInt!
 
-	tokenBalances: [TokenBalance!]! @derivedFrom(field: "oracle")
-
-	factory: OracleFactory!
-}
-
-type Owner @entity {
-	id: ID! # user address
-	safes: [OwnerSafe!]! @derivedFrom(field: "owner")
-}
-
-type Safe @entity {
-	id: ID! # safe address
-	oracle: Oracle @derivedFrom(field: "manager")
-	owners: [OwnerSafe!]! @derivedFrom(field: "safe")
-	nonce: BigInt!
-	approvedHash: []
-}
-
-type OwnerSafe @entity {
-	id: ID! # {owner}-{safe}
-	owner: Owner!
-	safe: Safe!
-}
-
-type SafeApprovedHashes @entity {
-	safe: Safe!
+	amount0: BigDecimal!
+	amount1: BigDecimal!
 }
