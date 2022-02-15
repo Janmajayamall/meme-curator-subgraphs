@@ -81,7 +81,7 @@ export function updateDetails(
 	const details = groupContract.marketDetails(marketIdentifier);
 	market.tokenC = details.value0;
 	market.fee = convertBigIntToDecimal(details.value1);
-	market.outcome = details.value2;
+	market.outcome = BigInt.fromI32(details.value2);
 
 	market.save();
 }

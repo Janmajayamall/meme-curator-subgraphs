@@ -1,5 +1,5 @@
 {
 	"network": "arbitrum-rinkeby",
-	"groupFactory": "0xd19d148E3B7636be56806968f05301fd7d983c66",
-	"marketRouter": "0xA34cEc6F2096C55B2Bed0185e67637BF7f4f2AbD"
+	"groupFactory": "0x1f7e73cefe7562fd2461e966cdfbc40645a6a3a4",
+	"groupRouter": "0x693346084446e287074402f420157120b2da5237"
 }

@@ -13,12 +13,12 @@ export function loadGroup(groupAddress: Address): Group {
 
 export function updateGroupDetails(
 	groupAddress: Address,
-	groupFactoryAddress?: Address
+	groupFactoryAddress: Address
 ): void {
 	const group = loadGroup(groupAddress);
 
 	// update factory
-	group.groupFactory = groupFactoryAddress ? groupFactoryAddress.toHex() : "";
+	group.groupFactory = groupFactoryAddress.toHex();
 
 	// update config
 	const groupContract = GroupContract.bind(groupAddress);

@@ -5,8 +5,8 @@ import {
 	OutcomeSet,
 	Redeemed,
 } from "../../generated/GroupFactory/Group";
-import { saveUser, saveUserMarket } from "../entities";
-import { updateGroupDetails } from "../entities/group";
+
+import { loadGroup, updateGroupDetails } from "../entities/group";
 import {
 	updateCommonInfo,
 	updateReserves,
@@ -17,6 +17,8 @@ import {
 	loadMarket,
 } from "../entities/market";
 import { updateUserStake } from "../entities/userStake";
+import { saveUser } from "../entities/user";
+import { saveUserMarket } from "../entities/userMarket";
 import {
 	ONE_BI,
 	ZERO_BD,
@@ -24,6 +26,7 @@ import {
 	TWO_BI,
 	convertBigIntToDecimal,
 } from "../helpers";
+import { Address } from "@graphprotocol/graph-ts";
 
 export function handleMarketCreated(event: MarketCreated): void {
 	updateCommonInfo(event.params.marketIdentifier, event.address);
@@ -102,5 +105,8 @@ export function handleOutcomeSet(event: OutcomeSet): void {
 }
 
 export function handleConfigUpdated(event: ConfigUpdated): void {
-	updateGroupDetails(event.address);
+	updateGroupDetails(
+		event.address,
+		Address.fromString(loadGroup(event.address).groupFactory)
+	);
 }
