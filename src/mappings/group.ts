@@ -26,7 +26,8 @@ import {
 	TWO_BI,
 	convertBigIntToDecimal,
 } from "../helpers";
-import { Address } from "@graphprotocol/graph-ts";
+import { Address, BigInt } from "@graphprotocol/graph-ts";
+import { updateUserPosition } from "../entities/userPosition";
 
 export function handleMarketCreated(event: MarketCreated): void {
 	updateCommonInfo(event.params.marketIdentifier, event.address);
@@ -41,6 +42,18 @@ export function handleMarketCreated(event: MarketCreated): void {
 	saveUserMarket(event.params.creator, event.params.marketIdentifier);
 	saveUserMarket(event.params.challenger, event.params.marketIdentifier);
 
+	// update user positions
+	updateUserPosition(
+		event.params.creator,
+		event.params.marketIdentifier,
+		event.address
+	);
+	updateUserPosition(
+		event.params.challenger,
+		event.params.marketIdentifier,
+		event.address
+	);
+
 	// update user stakes
 	const market = loadMarket(event.params.marketIdentifier);
 	updateUserStake(
@@ -48,16 +61,16 @@ export function handleMarketCreated(event: MarketCreated): void {
 		event.params.marketIdentifier,
 		event.address,
 		market.donEscalationCount.plus(ONE_BI),
-		ZERO_BD,
-		market.reserve0
+		market.reserve1,
+		ONE_BI
 	);
 	updateUserStake(
 		event.params.challenger,
 		event.params.marketIdentifier,
 		event.address,
 		market.donEscalationCount.plus(TWO_BI),
-		market.reserve1,
-		ZERO_BD
+		market.reserve0,
+		ZERO_BI
 	);
 
 	// update escalation count to 2
@@ -80,12 +93,15 @@ export function handleChallenged(event: Challenged): void {
 		event.params.marketIdentifier,
 		event.address,
 		donEscalationCount.plus(ONE_BI),
-		event.params.outcome == 0
-			? convertBigIntToDecimal(event.params.amount)
-			: ZERO_BD,
-		event.params.outcome == 1
-			? convertBigIntToDecimal(event.params.amount)
-			: ZERO_BD
+		convertBigIntToDecimal(event.params.amount),
+		BigInt.fromI32(event.params.outcome)
+	);
+
+	// update user positions
+	updateUserPosition(
+		event.params.by,
+		event.params.marketIdentifier,
+		event.address
 	);
 
 	// increase donEscalationCount by 1
@@ -96,6 +112,13 @@ export function handleRedeemed(event: Redeemed): void {
 	updateReserves(event.params.marketIdentifier, event.address);
 	saveUser(event.params.by);
 	saveUserMarket(event.params.by, event.params.marketIdentifier);
+
+	// update user positions
+	updateUserPosition(
+		event.params.by,
+		event.params.marketIdentifier,
+		event.address
+	);
 }
 
 export function handleOutcomeSet(event: OutcomeSet): void {

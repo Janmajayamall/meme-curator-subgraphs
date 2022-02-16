@@ -8,7 +8,7 @@ dataSources:
       source:
           address: "{{groupFactory}}"
           abi: GroupFactory
-          startBlock: 9517137
+          startBlock: 9517156
       mapping:
           kind: ethereum/events
           apiVersion: 0.0.5

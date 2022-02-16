@@ -53,18 +53,33 @@ type Market @entity {
 
 	stakes: [UserStake!]! @derivedFrom(field: "market")
 	users: [UserMarket!]! @derivedFrom(field: "market")
+	positions: [UserPosition!]! @derivedFrom(field: "market")
 }
 
 type User @entity {
 	id: ID!
 	markets: [UserMarket!]! @derivedFrom(field: "user")
 	stakes: [UserStake!]! @derivedFrom(field: "user")
+	positions: [UserPosition!]! @derivedFrom(field: "user")
 }
 
 type UserMarket @entity {
 	id: ID! # {user}-{market}
 	user: User!
 	market: Market!
+}
+
+type UserPosition @entity {
+	id: ID! # {user}-{marketIdentifier}-{group}
+	user: User!
+	market: Market!
+	group: Group!
+
+	stakeId0: Bytes!
+	stakeId1: Bytes!
+
+	amount0: BigDecimal!
+	amount1: BigDecimal!
 }
 
 type UserStake @entity {
@@ -75,6 +90,6 @@ type UserStake @entity {
 
 	donEscalationIndex: BigInt!
 
-	amount0: BigDecimal!
-	amount1: BigDecimal!
+	amount: BigDecimal!
+	outcome: BigInt!
 }

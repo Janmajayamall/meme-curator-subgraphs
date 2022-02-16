@@ -33,8 +33,8 @@ export function updateUserStake(
 	marketIdentifier: Bytes,
 	groupAddress: Address,
 	donEscalationIndex: BigInt,
-	amount0: BigDecimal,
-	amount1: BigDecimal
+	amount: BigDecimal,
+	outcome: BigInt
 ): void {
 	const userStake = loadUserStake(
 		userAddress,
@@ -43,8 +43,8 @@ export function updateUserStake(
 		donEscalationIndex
 	);
 
-	userStake.amount0 = amount0;
-	userStake.amount1 = amount1;
+	userStake.amount = amount;
+	userStake.outcome = outcome;
 
 	userStake.save();
 }
