@@ -1,179 +1,24 @@
 [
 	{
-		"inputs": [],
-		"stateMutability": "nonpayable",
-		"type": "constructor"
+		"type": "constructor",
+		"inputs": []
 	},
 	{
+		"type": "function",
+		"name": "S_ID",
 		"inputs": [],
-		"name": "AmountNotDouble",
-		"type": "error"
-	},
-	{
-		"inputs": [],
-		"name": "BalanceError",
-		"type": "error"
-	},
-	{
-		"inputs": [],
-		"name": "CreateMarketAmountsMismatch",
-		"type": "error"
-	},
-	{
-		"inputs": [],
-		"name": "GroupInActive",
-		"type": "error"
-	},
-	{
-		"inputs": [],
-		"name": "InvalidChallengeCall",
-		"type": "error"
-	},
-	{
-		"inputs": [],
-		"name": "InvalidFee",
-		"type": "error"
-	},
-	{
-		"inputs": [],
-		"name": "InvalidOutcome",
-		"type": "error"
-	},
-	{
-		"inputs": [],
-		"name": "InvalidRedeemCall",
-		"type": "error"
-	},
-	{
-		"inputs": [],
-		"name": "InvalidSetOutcomeCall",
-		"type": "error"
-	},
-	{
-		"inputs": [],
-		"name": "MarketExists",
-		"type": "error"
-	},
-	{
-		"inputs": [],
-		"name": "OutcomeNotSet",
-		"type": "error"
-	},
-	{
-		"inputs": [],
-		"name": "UnAuthenticated",
-		"type": "error"
-	},
-	{
-		"inputs": [],
-		"name": "ZeroAmount",
-		"type": "error"
-	},
-	{
-		"inputs": [],
-		"name": "ZeroManagerAddress",
-		"type": "error"
-	},
-	{
-		"inputs": [],
-		"name": "ZeroPeriodBuffer",
-		"type": "error"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
+		"outputs": [
 			{
-				"indexed": true,
-				"internalType": "bytes32",
-				"name": "marketIdentifier",
-				"type": "bytes32"
-			},
-			{
-				"indexed": false,
-				"internalType": "address",
-				"name": "by",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "amount",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint8",
-				"name": "outcome",
-				"type": "uint8"
+				"internalType": "string",
+				"name": "",
+				"type": "string"
 			}
 		],
-		"name": "Challenged",
-		"type": "event"
+		"stateMutability": "view"
 	},
 	{
-		"anonymous": false,
-		"inputs": [],
-		"name": "ConfigUpdated",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "bytes32",
-				"name": "marketIdentifier",
-				"type": "bytes32"
-			},
-			{
-				"indexed": false,
-				"internalType": "address",
-				"name": "creator",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "address",
-				"name": "challenger",
-				"type": "address"
-			}
-		],
-		"name": "MarketCreated",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "bytes32",
-				"name": "marketIdentifier",
-				"type": "bytes32"
-			}
-		],
-		"name": "OutcomeSet",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "bytes32",
-				"name": "marketIdentifier",
-				"type": "bytes32"
-			},
-			{
-				"indexed": false,
-				"internalType": "address",
-				"name": "by",
-				"type": "address"
-			}
-		],
-		"name": "Redeemed",
-		"type": "event"
-	},
-	{
+		"type": "function",
+		"name": "cReserves",
 		"inputs": [
 			{
 				"internalType": "address",
@@ -181,7 +26,6 @@
 				"type": "address"
 			}
 		],
-		"name": "cReserves",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -189,10 +33,11 @@
 				"type": "uint256"
 			}
 		],
-		"stateMutability": "view",
-		"type": "function"
+		"stateMutability": "view"
 	},
 	{
+		"type": "function",
+		"name": "challenge",
 		"inputs": [
 			{
 				"internalType": "uint8",
@@ -210,14 +55,13 @@
 				"type": "address"
 			}
 		],
-		"name": "challenge",
 		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
+		"stateMutability": "nonpayable"
 	},
 	{
-		"inputs": [],
+		"type": "function",
 		"name": "collateralToken",
+		"inputs": [],
 		"outputs": [
 			{
 				"internalType": "address",
@@ -225,10 +69,11 @@
 				"type": "address"
 			}
 		],
-		"stateMutability": "view",
-		"type": "function"
+		"stateMutability": "view"
 	},
 	{
+		"type": "function",
+		"name": "createMarket",
 		"inputs": [
 			{
 				"internalType": "bytes32",
@@ -256,14 +101,13 @@
 				"type": "uint256"
 			}
 		],
-		"name": "createMarket",
 		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
+		"stateMutability": "nonpayable"
 	},
 	{
-		"inputs": [],
+		"type": "function",
 		"name": "donReservesLimit",
+		"inputs": [],
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -271,12 +115,41 @@
 				"type": "uint256"
 			}
 		],
-		"stateMutability": "view",
-		"type": "function"
+		"stateMutability": "view"
 	},
 	{
-		"inputs": [],
+		"type": "function",
+		"name": "getStakingIds",
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "marketIdentifier",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "address",
+				"name": "_of",
+				"type": "address"
+			}
+		],
+		"outputs": [
+			{
+				"internalType": "bytes32",
+				"name": "sId0",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "bytes32",
+				"name": "sId1",
+				"type": "bytes32"
+			}
+		],
+		"stateMutability": "pure"
+	},
+	{
+		"type": "function",
 		"name": "globalConfig",
+		"inputs": [],
 		"outputs": [
 			{
 				"internalType": "uint64",
@@ -299,12 +172,12 @@
 				"type": "bool"
 			}
 		],
-		"stateMutability": "view",
-		"type": "function"
+		"stateMutability": "view"
 	},
 	{
-		"inputs": [],
+		"type": "function",
 		"name": "manager",
+		"inputs": [],
 		"outputs": [
 			{
 				"internalType": "address",
@@ -312,10 +185,11 @@
 				"type": "address"
 			}
 		],
-		"stateMutability": "view",
-		"type": "function"
+		"stateMutability": "view"
 	},
 	{
+		"type": "function",
+		"name": "marketDetails",
 		"inputs": [
 			{
 				"internalType": "bytes32",
@@ -323,7 +197,6 @@
 				"type": "bytes32"
 			}
 		],
-		"name": "marketDetails",
 		"outputs": [
 			{
 				"internalType": "address",
@@ -341,10 +214,11 @@
 				"type": "uint8"
 			}
 		],
-		"stateMutability": "view",
-		"type": "function"
+		"stateMutability": "view"
 	},
 	{
+		"type": "function",
+		"name": "marketReserves",
 		"inputs": [
 			{
 				"internalType": "bytes32",
@@ -352,7 +226,6 @@
 				"type": "bytes32"
 			}
 		],
-		"name": "marketReserves",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -365,10 +238,11 @@
 				"type": "uint256"
 			}
 		],
-		"stateMutability": "view",
-		"type": "function"
+		"stateMutability": "view"
 	},
 	{
+		"type": "function",
+		"name": "marketStakeInfo",
 		"inputs": [
 			{
 				"internalType": "bytes32",
@@ -376,7 +250,6 @@
 				"type": "bytes32"
 			}
 		],
-		"name": "marketStakeInfo",
 		"outputs": [
 			{
 				"internalType": "address",
@@ -394,10 +267,11 @@
 				"type": "uint256"
 			}
 		],
-		"stateMutability": "view",
-		"type": "function"
+		"stateMutability": "view"
 	},
 	{
+		"type": "function",
+		"name": "marketStates",
 		"inputs": [
 			{
 				"internalType": "bytes32",
@@ -405,7 +279,6 @@
 				"type": "bytes32"
 			}
 		],
-		"name": "marketStates",
 		"outputs": [
 			{
 				"internalType": "uint64",
@@ -428,10 +301,11 @@
 				"type": "uint64"
 			}
 		],
-		"stateMutability": "view",
-		"type": "function"
+		"stateMutability": "view"
 	},
 	{
+		"type": "function",
+		"name": "redeem",
 		"inputs": [
 			{
 				"internalType": "bytes32",
@@ -444,12 +318,12 @@
 				"type": "address"
 			}
 		],
-		"name": "redeem",
 		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
+		"stateMutability": "nonpayable"
 	},
 	{
+		"type": "function",
+		"name": "setOutcome",
 		"inputs": [
 			{
 				"internalType": "uint8",
@@ -462,12 +336,12 @@
 				"type": "bytes32"
 			}
 		],
-		"name": "setOutcome",
 		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
+		"stateMutability": "nonpayable"
 	},
 	{
+		"type": "function",
+		"name": "stakes",
 		"inputs": [
 			{
 				"internalType": "bytes32",
@@ -475,7 +349,6 @@
 				"type": "bytes32"
 			}
 		],
-		"name": "stakes",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -483,10 +356,11 @@
 				"type": "uint256"
 			}
 		],
-		"stateMutability": "view",
-		"type": "function"
+		"stateMutability": "view"
 	},
 	{
+		"type": "function",
+		"name": "updateCollateralToken",
 		"inputs": [
 			{
 				"internalType": "address",
@@ -494,12 +368,12 @@
 				"type": "address"
 			}
 		],
-		"name": "updateCollateralToken",
 		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
+		"stateMutability": "nonpayable"
 	},
 	{
+		"type": "function",
+		"name": "updateDonReservesLimit",
 		"inputs": [
 			{
 				"internalType": "uint256",
@@ -507,12 +381,12 @@
 				"type": "uint256"
 			}
 		],
-		"name": "updateDonReservesLimit",
 		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
+		"stateMutability": "nonpayable"
 	},
 	{
+		"type": "function",
+		"name": "updateGlobalConfig",
 		"inputs": [
 			{
 				"internalType": "bool",
@@ -535,12 +409,12 @@
 				"type": "uint64"
 			}
 		],
-		"name": "updateGlobalConfig",
 		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
+		"stateMutability": "nonpayable"
 	},
 	{
+		"type": "function",
+		"name": "updateManager",
 		"inputs": [
 			{
 				"internalType": "address",
@@ -548,9 +422,166 @@
 				"type": "address"
 			}
 		],
-		"name": "updateManager",
 		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
+		"stateMutability": "nonpayable"
+	},
+	{
+		"type": "event",
+		"name": "Challenged",
+		"inputs": [
+			{
+				"name": "marketIdentifier",
+				"type": "bytes32",
+				"indexed": true
+			},
+			{
+				"name": "by",
+				"type": "address",
+				"indexed": false
+			},
+			{
+				"name": "amount",
+				"type": "uint256",
+				"indexed": false
+			},
+			{
+				"name": "outcome",
+				"type": "uint8",
+				"indexed": false
+			}
+		],
+		"anonymous": false
+	},
+	{
+		"type": "event",
+		"name": "ConfigUpdated",
+		"inputs": [],
+		"anonymous": false
+	},
+	{
+		"type": "event",
+		"name": "MarketCreated",
+		"inputs": [
+			{
+				"name": "marketIdentifier",
+				"type": "bytes32",
+				"indexed": true
+			},
+			{
+				"name": "creator",
+				"type": "address",
+				"indexed": false
+			},
+			{
+				"name": "challenger",
+				"type": "address",
+				"indexed": false
+			}
+		],
+		"anonymous": false
+	},
+	{
+		"type": "event",
+		"name": "OutcomeSet",
+		"inputs": [
+			{
+				"name": "marketIdentifier",
+				"type": "bytes32",
+				"indexed": true
+			}
+		],
+		"anonymous": false
+	},
+	{
+		"type": "event",
+		"name": "Redeemed",
+		"inputs": [
+			{
+				"name": "marketIdentifier",
+				"type": "bytes32",
+				"indexed": true
+			},
+			{
+				"name": "by",
+				"type": "address",
+				"indexed": false
+			}
+		],
+		"anonymous": false
+	},
+	{
+		"type": "error",
+		"name": "AmountNotDouble",
+		"inputs": []
+	},
+	{
+		"type": "error",
+		"name": "BalanceError",
+		"inputs": []
+	},
+	{
+		"type": "error",
+		"name": "CreateMarketAmountsMismatch",
+		"inputs": []
+	},
+	{
+		"type": "error",
+		"name": "GroupInActive",
+		"inputs": []
+	},
+	{
+		"type": "error",
+		"name": "InvalidChallengeCall",
+		"inputs": []
+	},
+	{
+		"type": "error",
+		"name": "InvalidFee",
+		"inputs": []
+	},
+	{
+		"type": "error",
+		"name": "InvalidOutcome",
+		"inputs": []
+	},
+	{
+		"type": "error",
+		"name": "InvalidRedeemCall",
+		"inputs": []
+	},
+	{
+		"type": "error",
+		"name": "InvalidSetOutcomeCall",
+		"inputs": []
+	},
+	{
+		"type": "error",
+		"name": "MarketExists",
+		"inputs": []
+	},
+	{
+		"type": "error",
+		"name": "OutcomeNotSet",
+		"inputs": []
+	},
+	{
+		"type": "error",
+		"name": "UnAuthenticated",
+		"inputs": []
+	},
+	{
+		"type": "error",
+		"name": "ZeroAmount",
+		"inputs": []
+	},
+	{
+		"type": "error",
+		"name": "ZeroManagerAddress",
+		"inputs": []
+	},
+	{
+		"type": "error",
+		"name": "ZeroPeriodBuffer",
+		"inputs": []
 	}
 ]

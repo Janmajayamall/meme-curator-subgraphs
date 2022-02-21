@@ -9,9 +9,11 @@
 		"remove-local": "graph remove --node http://localhost:8020/ pm",
 		"deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 pm",
 		"deploy-hosted-prod": "npm run prepare:prod && graph auth --product hosted-service $ACCESS_TOKEN && graph deploy --product hosted-service janmajayamall/meme-curator-subgraphs",
-		"deploy-hosted-test": "npm run prepare:test && graph auth --product hosted-service $ACCESS_TOKEN && graph deploy --product hosted-service janmajayamall/pm-content-test",
+		"deploy-hosted-dev": "npm run prepare:dev && graph auth --product hosted-service $ACCESS_TOKEN && graph deploy --product hosted-service janmajayamall/pm-content-test",
+		"deploy-hosted-staging": "npm run prepare:staging && graph auth --product hosted-service $ACCESS_TOKEN && graph deploy --product hosted-service janmajayamall/cocostaging",
 		"prepare:prod": "mustache config/arbitrum-rinkeby-prod.json subgraph.template.yaml > subgraph.yaml",
-		"prepare:test": "mustache config/arbitrum-rinkeby-test.json subgraph.template.yaml > subgraph.yaml"
+		"prepare:dev": "mustache config/arbitrum-rinkeby-dev.json subgraph.template.yaml > subgraph.yaml",
+		"prepare:staging": "mustache config/arbitrum-rinkeby-staging.json subgraph.template.yaml > subgraph.yaml"
 	},
 	"dependencies": {
 		"@graphprotocol/graph-cli": "0.22.4",
@@ -22,4 +24,3 @@
 		"mustache": "^4.2.0"
 	}
 }
- 

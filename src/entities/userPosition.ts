@@ -7,7 +7,7 @@ import {
 } from "@graphprotocol/graph-ts";
 import { UserPosition } from "../../generated/schema";
 import { Group as GroupContract } from "../../generated/GroupFactory/Group";
-import { convertBigIntToDecimal, getStakingId } from "../helpers";
+import { convertBigIntToDecimal } from "../helpers";
 
 export function loadUserPosition(
 	userAddress: Address,
@@ -44,8 +44,12 @@ export function updateUserPosition(
 
 	// get user stakes
 	const groupContract = GroupContract.bind(groupAddress);
-	userPosition.stakeId0 = getStakingId(marketIdentifier, userAddress, "0");
-	userPosition.stakeId1 = getStakingId(marketIdentifier, userAddress, "1");
+	const stakingIds = groupContract.getStakingIds(
+		marketIdentifier,
+		userAddress
+	);
+	userPosition.stakeId0 = stakingIds.value0;
+	userPosition.stakeId1 = stakingIds.value1;
 	userPosition.amount0 = convertBigIntToDecimal(
 		groupContract.stakes(userPosition.stakeId0)
 	);

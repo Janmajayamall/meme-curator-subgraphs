@@ -30,20 +30,6 @@ export function convertAddressBytesToAddress(address: Bytes): Address {
 	return changetype<Address>(address);
 }
 
-export function getStakingId(
-	marketIdentifier: Bytes,
-	userAddress: Bytes,
-	index: String
-): Bytes {
-	const hashInput =
-		S_ID +
-		index +
-		marketIdentifier.toHexString() +
-		userAddress.toHexString();
-
-	return Bytes.fromByteArray(crypto.keccak256(ByteArray.fromUTF8(hashInput)));
-}
-
 export class Staking {
 	lastAmountStaked: BigDecimal;
 	staker0: Address;
