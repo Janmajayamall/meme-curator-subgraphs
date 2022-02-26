@@ -6,9 +6,9 @@ dataSources:
       name: GroupFactory
       network: "arbitrum-rinkeby"
       source:
-          address: "0xa4a1bd14029359fd0c81a6770a94984087122930"
+          address: "0xd987af7a17a55d261933f6445a86373501b071ef"
           abi: GroupFactory
-          startBlock: 9684698
+          startBlock: 9846609
       mapping:
           kind: ethereum/events
           apiVersion: 0.0.5
