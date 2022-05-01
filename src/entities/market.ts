@@ -3,6 +3,7 @@ import { Group, Market } from "../../generated/schema";
 import { Group as GroupContract } from "../../generated/GroupFactory/Group";
 import { convertBigIntToDecimal, ZERO_BI } from "../helpers";
 
+// TODO - change market ID to {marketIdentifier}-{groupAddress}
 export function loadMarket(marketIdentifier: Bytes): Market {
 	var market = Market.load(marketIdentifier.toHex());
 	if (!market) {
