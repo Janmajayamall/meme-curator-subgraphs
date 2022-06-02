@@ -7,10 +7,11 @@
 		"deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ pm",
 		"create-local": "graph create --node http://localhost:8020/ pm",
 		"remove-local": "graph remove --node http://localhost:8020/ pm",
-		"deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 pm",
+		"deploy-local": "npm run prepare:local && graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 pm",
 		"deploy-hosted-prod": "npm run prepare:prod && graph auth --product hosted-service $ACCESS_TOKEN && graph deploy --product hosted-service janmajayamall/meme-curator-subgraphs",
 		"deploy-hosted-dev": "npm run prepare:dev && graph auth --product hosted-service $ACCESS_TOKEN && graph deploy --product hosted-service janmajayamall/pm-content-test",
 		"deploy-hosted-staging": "npm run prepare:staging && graph auth --product hosted-service $ACCESS_TOKEN && graph deploy --product hosted-service janmajayamall/cocostaging",
+		"prepare:local": "mustache config/local.json subgraph.template.yaml > subgraph.yaml",
 		"prepare:prod": "mustache config/arbitrum-rinkeby-prod.json subgraph.template.yaml > subgraph.yaml",
 		"prepare:dev": "mustache config/arbitrum-rinkeby-dev.json subgraph.template.yaml > subgraph.yaml",
 		"prepare:staging": "mustache config/arbitrum-rinkeby-staging.json subgraph.template.yaml > subgraph.yaml"
