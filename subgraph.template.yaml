@@ -27,7 +27,7 @@ dataSources:
 templates:
     - name: Group
       kind: ethereum/contract
-      network: arbitrum-rinkeby
+      network: "{{network}}"
       source:
           abi: Group
       mapping:
